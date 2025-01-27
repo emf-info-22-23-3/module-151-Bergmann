@@ -5,7 +5,7 @@
  * @version 1.0 / 20-SEP-2013
  */
 
-var BASE_URL = "http://localhost:8080/Project151/module-151-LeonBergmannEMF/src/exercices/exercice4/Server/serveur.php";
+var BASE_URL = "http://localhost:8080/exercices/exercice4/Server/serveur.php";
 
 /**
  * Fonction permettant de charger les données d'équipe.
