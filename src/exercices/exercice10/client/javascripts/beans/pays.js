@@ -12,7 +12,7 @@ var Pays = function() {
 /**
  * Setter pour le nom
  * @param String nom
- * @returns {undefined}
+ * @returns le nom
  */
 Pays.prototype.setNom = function(nom) {
   this.nom = nom;

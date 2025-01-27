@@ -1,5 +1,5 @@
 <?php 
-	include_once('connexion.php');
+	include_once('Connexion.php');
 	include_once('beans/Pays.php');
         
 	/**
@@ -24,7 +24,7 @@
 			$count = 0;
 			$liste = array();
 			$connection = new Connection();
-			$query = $connection->executeQuery("select * from t_pays order by Nom");
+			$query = $connection->executeQuery("SELECT * from t_pays order by Nom");
 			foreach($query as $data){
 				$pays = new Pays($data['PK_pays'], $data['Nom']);
 				$liste[$count++] = $pays;
