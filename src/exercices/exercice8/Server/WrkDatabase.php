@@ -10,7 +10,7 @@ class WrkDatabase
 
     public function __construct()
     {
-        $this->pdo = new PDO('mysql:host=mysql;port=3306;dbname=hockey_stats;charset=utf8', 'root', 'root');
+        $this->pdo = new PDO('mysql:host=database;port=3306;dbname=hockey_stats;charset=utf8', 'root', 'root');
         $this->equipes = array();
     }
 
