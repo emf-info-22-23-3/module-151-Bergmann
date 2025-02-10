@@ -1,0 +1,49 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+#UsernameFlexBox{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#PasswordFlexBox{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#CheckboxFlexBox{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#ButtonFlexbox{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-self: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#totalityContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: fit-content;
+    align-self: center;
+    
+}
