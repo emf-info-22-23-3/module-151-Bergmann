@@ -1,0 +1,139 @@
+html{
+    height: 100%;
+}
+body{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    text-align: center;
+    width: 100%;
+    height: 97%;
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
+    gap: 3%;
+}
+
+#flexboxStats {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    width: 10%;
+}
+
+#flexboxHealth {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#flexboxStamina {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#flexboxArmor {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#flexboxWeight {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#flexboxItems{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#flexboxClasses{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 29%;
+    align-self: center;
+    gap: 5%;
+}
+
+#flexboxEquipment{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 60%;
+    align-self: center;
+    gap: 7%;
+    padding-top: 5%;
+}
+
+#flexboxArmorPieces{
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+    width: 25%;
+    height: 50%;
+    align-content: start;
+
+}
+
+#flexboxBanner{
+    width: 45%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+}
+
+#imgPrimaryClass{
+    width: 45%;
+    height: 40%;
+    background-color: purple;
+}
+
+#imgSecondaryClass{
+    width: 45%;
+    height: 40%;
+    background-color: purple;
+}
+
+#flexboxRings{
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    gap: 5%;
+    width: 25%;
+    height: 50%;
+
+}
+
+#flexboxCRUD{
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    width: 10%;
+    gap: 1%;
+}
+
+
+  .custom-select {
+    width: 80%;
+  }
+  
+  .custom-select select {
+    appearance: none;
+    width: 100%;
+    font-size: 15px;
+    background-color: #fff;
+    border: 1px solid #caced1;
+    color: #000;
+    cursor: pointer;
+  }
