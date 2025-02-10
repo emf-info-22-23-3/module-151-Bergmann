@@ -6,7 +6,7 @@
 	while ($row = $response->fetch())
 	{
 	
-		echo <p>$row['titre']</p>;
+		//echo <p>$row['titre']</p>;
 
 	
 	}
