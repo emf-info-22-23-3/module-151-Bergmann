@@ -8,7 +8,6 @@ export class WrkHttps {
     signUp(username, password, successCallback, errorCallback) {
         $.ajax({
             type: "POST",
-            dataType: "xml",
             url: this.#URL,
             data: 'action=signUp&username=' + username + '&password=' + password,
             success: successCallback,
@@ -19,9 +18,8 @@ export class WrkHttps {
     connect(username, password, successCallback, errorCallback) {
         $.ajax({
             type: "POST",
-            dataType: "xml",
             url: this.#URL,
-            data: 'action=connect&username=' + username + 'password=' + password,
+            data: 'action=connect&username=' + username + '&password=' + password,
             success: successCallback,
             error: errorCallback
         });

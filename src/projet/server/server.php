@@ -9,5 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $success = $loginCtrl->createUser($_POST['username'], $_POST['password']);
         var_dump(http_response_code($success));
     }
+    if ($_POST['action'] == "login") {
+        $success = $loginCtrl->login($_POST['username'], $_POST['password']);
+        var_dump(http_response_code($success));
+    }
 }
 

@@ -1,5 +1,5 @@
 <?php
-include_once(realpath( __DIR__ . '/DBConnectionWrk.php'));
+include_once(realpath(__DIR__ . '/DBConnectionWrk.php'));
 class LoginWrk
 {
     private $dbConnection;
@@ -11,10 +11,17 @@ class LoginWrk
 
     public function login($username, $password)
     {
+        $success = false;
         $query = "SELECT * FROM t_user WHERE name = :name";
         $params = [':name' => ["$username", PDO::PARAM_STR]];
         $result = $this->dbConnection->selectQuery($query, $params);
-        
+        foreach ($result as $data) {
+            if ($this->verifyPassword($data["Password"], $password)) {
+                $success = true;
+            }
+        }
+        return $success;
+
     }
 
     public function createUser($username, $password)
