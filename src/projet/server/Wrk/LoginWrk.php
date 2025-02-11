@@ -1,5 +1,5 @@
 <?php
-include_once("DBConnectionWrk.php");
+include_once(realpath( __DIR__ . '/DBConnectionWrk.php'));
 class LoginWrk
 {
     private $dbConnection;

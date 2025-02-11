@@ -1,5 +1,5 @@
 <?php
-include_once("../beans/User.php");
+include_once(realpath(__DIR__ . '/../beans/User.php'));
 class SessionCtrl
 {
     private $currentUser;

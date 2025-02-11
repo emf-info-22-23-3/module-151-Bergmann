@@ -1,6 +1,6 @@
 <?php
-include_once("../Wrk/LoginWrk.php");
-include_once("SessionCtrl.php");
+include_once(realpath(__DIR__ . '/../Wrk/LoginWrk.php'));
+include_once(realpath(__DIR__ . '/SessionCtrl.php'));
 class LoginCtrl
 {
     private $loginWrk;

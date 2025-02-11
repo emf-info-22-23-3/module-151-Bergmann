@@ -10,7 +10,7 @@ export class WrkHttps {
             type: "POST",
             dataType: "xml",
             url: this.#URL,
-            data: 'action=signUp&username=' + username + 'password=' + password,
+            data: 'action=signUp&username=' + username + '&password=' + password,
             success: successCallback,
             error: errorCallback
         });

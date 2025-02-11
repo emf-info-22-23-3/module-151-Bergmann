@@ -7,8 +7,8 @@ export class Ctrl {
     }
 
     signUp() {
-        var inputUsername = document.getElementById("inputUsername");
-        var inputPassword = document.getElementById("inputPassword");
+        var inputUsername = document.getElementById("inputUsername").value;
+        var inputPassword = document.getElementById("inputPassword").value;
         if (inputUsername!==null||inputUsername!==null) {
             this._wrk.signUp(inputUsername, inputPassword,this.signupSuccess,this.signupError);
             

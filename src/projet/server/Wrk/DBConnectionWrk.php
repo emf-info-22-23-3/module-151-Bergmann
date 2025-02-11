@@ -11,7 +11,7 @@ class DBConnectionWrk
     {
         $dsn = "mysql:host=mysql;port=3306;dbname=db_remnant2;charset=utf8";
         $username = "root";
-        $password = "emf123";
+        $password = "root";
 
         try {
             $this->pdo = new PDO($dsn, $username, $password);
