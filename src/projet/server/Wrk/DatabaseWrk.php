@@ -13,7 +13,7 @@ class DatabaseWrk
 
     }
 
-    public function getAmulets()
+    public function getAmulets(): array
     {
         $query = "SELECT * FROM t_amulet";
         $params = [];
@@ -22,8 +22,7 @@ class DatabaseWrk
         foreach ($result as $data) {
             $amulet = new Amulet($data['Name'], $data['ModifiedValue'], $data['Modifier'], $data['isPercentage'], $data['description']);
             $amulet->setSecondaryStats($data['secondaryModifier'], $data['secondaryValue'], $data['isPercentageSecondary']);
-            $this->amulets[$counter] = $amulet;
-            $counter++;
+            $this->amulets[$counter++] = $amulet;
         }
         return $this->amulets;
     }

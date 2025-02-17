@@ -1,5 +1,5 @@
 <?php
-class Amulet
+class Ring
 {
     private $name;
     private $modifiedValue;

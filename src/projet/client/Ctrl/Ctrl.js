@@ -1,4 +1,5 @@
 import { WrkHttps } from "../Wrk/WrkHttps.js";
+import { Amulet } from "../beans/Amulet.js";
 export class Ctrl {
     constructor() {
         this._wrk = new WrkHttps();
@@ -40,6 +41,7 @@ export class Ctrl {
     loginError(data, text, jqXHR) {
         console.log("errorcallback")
     }
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {

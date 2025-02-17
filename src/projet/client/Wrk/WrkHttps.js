@@ -24,4 +24,15 @@ export class WrkHttps {
             error: errorCallback
         });
     }
+    
+    getAmulets(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getAmulets',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
 }
