@@ -25,6 +25,16 @@ export class WrkHttps {
         });
     }
 
+    deconnect(successCallback, errorCallback) {
+        $.ajax({
+            type: "POST",
+            url: this.#URL,
+            data: 'action=deconnect',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
     getAmulets(successCallback, errorCallback) {
         $.ajax({
             type: "GET",
@@ -42,6 +52,50 @@ export class WrkHttps {
             dataType: "xml",
             url: this.#URL,
             data: 'action=getRings',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getHelmets(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getHelmets',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getChestplates(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getChestplates',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getGreaves(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getGreaves',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getGauntlets(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getGauntlets',
             success: successCallback,
             error: errorCallback
         });

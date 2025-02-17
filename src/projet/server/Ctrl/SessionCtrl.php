@@ -18,6 +18,7 @@ class SessionCtrl
     public function destroySession(): bool
     {
         session_destroy();
+        $this->currentUser = null;
         return !isset($_SESSION["currentUser"]);
     }
 

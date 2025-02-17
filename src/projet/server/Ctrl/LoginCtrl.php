@@ -33,4 +33,14 @@ class LoginCtrl
         }
         return $success;
     }
+
+    public function logout(): int
+    {
+        $success = 500;
+        $resultat = $this->sessionCtrl->destroySession();
+        if ($resultat) {
+            $success = 200;
+        }
+        return $success;
+    }
 }

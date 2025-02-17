@@ -1,10 +1,24 @@
 import { WrkHttps } from "../Wrk/WrkHttps.js";
 import { Amulet } from "../beans/Amulet.js";
 import { Ring } from "../beans/Ring.js";
+import { Helmet } from "../beans/Helmet.js";
+import { Chestplate } from "../beans/Chestplate.js";
+import { Greaves } from "../beans/Greaves.js";
+import { Gauntlets } from "../beans/Gauntlets.js";
+
 export class BuildCreatorCtrl {
     constructor() {
         this._wrk = new WrkHttps();
+        document.getElementById("buttonLogout").addEventListener("click", this.logout.bind(this));
+    }
 
+    loadData() {
+        this.getAmulets();
+        this.getRings();
+        this.getHelmets();
+        this.getChestplates();
+        this.getGreaves();
+        this.getGauntlets();
     }
 
     getAmulets() {
@@ -82,10 +96,114 @@ export class BuildCreatorCtrl {
     ringsError(data, text, jqXHR) {
         console.log("error");
     }
+
+
+    getHelmets() {
+        this._wrk.getHelmets(this.helmetSuccess, this.helmetError);
+    }
+
+    helmetSuccess(data, text, jqXHR) {
+        var helmets = document.getElementById("selectHelmets");
+        $(data).find("Helmet").each((index, helmetElement) => {
+            var helmet = new Helmet(
+                $(helmetElement).find("name").text(),
+                $(helmetElement).find("armor").text(),
+                $(helmetElement).find("weight").text(),
+            );
+            var option = document.createElement("option");
+            option.text = helmet.toString();
+            option.value = helmet;
+            helmets.appendChild(option);
+        });
+    }
+
+    helmetError(data, text, jqXHR) {
+        console.log("error helmet");
+    }
+
+    getChestplates() {
+        this._wrk.getChestplates(this.chestplateSuccess, this.chestplateError);
+    }
+
+    chestplateSuccess(data, text, jqXHR) {
+        var chestplates = document.getElementById("selectChestplates");
+        $(data).find("Chestplate").each((index, chestplateElement) => {
+            var chestplate = new Chestplate(
+                $(chestplateElement).find("name").text(),
+                $(chestplateElement).find("armor").text(),
+                $(chestplateElement).find("weight").text(),
+            );
+            var option = document.createElement("option");
+            option.text = chestplate.toString();
+            option.value = chestplate;
+            chestplates.appendChild(option);
+        });
+    }
+
+    chestplateError(data, text, jqXHR) {
+        console.log("error chestplate");
+    }
+
+    getGreaves() {
+        this._wrk.getGreaves(this.greavesSuccess, this.greavesError);
+    }
+
+    greavesSuccess(data, text, jqXHR) {
+        var greavesList = document.getElementById("selectGreaves");
+        $(data).find("Greaves").each((index, greavesElement) => {
+            var greaves = new Greaves(
+                $(greavesElement).find("name").text(),
+                $(greavesElement).find("armor").text(),
+                $(greavesElement).find("weight").text(),
+            );
+            var option = document.createElement("option");
+            option.text = greaves.toString();
+            option.value = greaves;
+            greavesList.appendChild(option);
+        });
+    }
+
+    greavesError(data, text, jqXHR) {
+        console.log("error greaves");
+    }
+
+    getGauntlets() {
+        this._wrk.getGauntlets(this.gauntletsSuccess, this.gauntletsError);
+    }
+
+    gauntletsSuccess(data, text, jqXHR) {
+        var gauntletsList = document.getElementById("selectGauntlets");
+        $(data).find("Gauntlets").each((index, gauntletsElement) => {
+            var gauntlets = new Gauntlets(
+                $(gauntletsElement).find("name").text(),
+                $(gauntletsElement).find("armor").text(),
+                $(gauntletsElement).find("weight").text(),
+            );
+            var option = document.createElement("option");
+            option.text = gauntlets.toString();
+            option.value = gauntlets;
+            gauntletsList.appendChild(option);
+        });
+    }
+
+    gauntletsError(data, text, jqXHR) {
+        console.log("error gauntlets");
+    }
+
+    logout() {
+        this._wrk.deconnect(this.logoutSuccess, this.logoutError);
+    }
+
+    logoutSuccess() {
+        window.location.replace("http://localhost:8080/projet/client/index.html");
+    }
+
+    logoutError() {
+        console.log("error logout");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const ctrl = new BuildCreatorCtrl();
-    ctrl.getAmulets();
-    ctrl.getRings();
+    ctrl.loadData();
 });

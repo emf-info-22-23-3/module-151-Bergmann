@@ -15,6 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $success = $loginCtrl->login($_POST['username'], $_POST['password']);
         var_dump(http_response_code($success));
     }
+    if ($_POST['action'] == "logout") {
+        $success = $loginCtrl->logout();
+        var_dump(http_response_code($success));
+    }
 }
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($_GET['action'] == "getAmulets") {
@@ -23,6 +27,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if ($_GET['action'] == "getRings") {
         $success = $dataCtrl->getRings();
+        echo $success;
+    }
+    if ($_GET['action'] == "getHelmets") {
+        $success = $dataCtrl->getHelmets();
+        echo $success;
+    }
+    if ($_GET['action'] == "getChestplates") {
+        $success = $dataCtrl->getChestplates();
+        echo $success;
+    }
+    if ($_GET['action'] == "getGreaves") {
+        $success = $dataCtrl->getGreaves();
+        echo $success;
+    }
+    if ($_GET['action'] == "getGauntlets") {
+        $success = $dataCtrl->getGauntlets();
         echo $success;
     }
 }
