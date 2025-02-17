@@ -61,7 +61,7 @@ class Ring
 
     public function asXML()
     {
-        $result = "<Amulet>";
+        $result = "<Ring>";
         $result = $result . "<name>" . $this->name . "</name>";
         $result = $result . "<modifiedvalue>" . $this->modifiedValue . "</modifiedvalue>";
         $result = $result . "<modifier>" . $this->modifier . "</modifier>";
@@ -70,7 +70,7 @@ class Ring
         $result = $result . "<secondaryvalue>" . $this->secondaryValue . "</secondaryvalue>";
         $result = $result . "<secondarymodifier>" . $this->secondaryModifier . "</secondarymodifier>";
         $result = $result . "<ispercentagesecondary>" . $this->isPercentageSecondary . "</ispercentagesecondary>";
-        $result = $result . "</Amulet>";
+        $result = $result . "</Ring>";
         return $result;
     }
 

@@ -21,5 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $success = $dataCtrl->getAmulets();
         echo $success;
     }
+    if ($_GET['action'] == "getRings") {
+        $success = $dataCtrl->getRings();
+        echo $success;
+    }
 }
 
