@@ -10,6 +10,7 @@ export class BuildCreatorCtrl {
     constructor() {
         this._wrk = new WrkHttps();
         document.getElementById("buttonLogout").addEventListener("click", this.logout.bind(this));
+        document.getElementById("selectAmulets").addEventListener("change",this.amuletEvent.bind(this))
     }
 
     loadData() {
@@ -200,6 +201,13 @@ export class BuildCreatorCtrl {
 
     logoutError() {
         console.log("error logout");
+    }
+
+
+    amuletEvent(evt){
+        var selectElement = document.getElementById("selectAmulets");
+        var selectedValue = selectElement.value;
+        console.log(selectedValue);
     }
 }
 
