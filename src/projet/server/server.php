@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "login") {
         $success = $loginCtrl->login($_POST['username'], $_POST['password']);
         var_dump(http_response_code($success));
+        // http_response_code($success);
     }
     if ($_POST['action'] == "logout") {
         $success = $loginCtrl->logout();
@@ -43,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if ($_GET['action'] == "getGauntlets") {
         $success = $dataCtrl->getGauntlets();
+        echo $success;
+    }
+    if ($_GET['action'] == "getBuilds") {
+        $success = $dataCtrl->getBuilds();
         echo $success;
     }
 }

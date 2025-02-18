@@ -198,6 +198,7 @@ export class BuildCreatorCtrl {
     }
 
     logoutSuccess() {
+        sessionStorage.removeItem("Username");
         window.location.replace("http://localhost:8080/projet/client/index.html");
     }
 
@@ -211,15 +212,23 @@ export class BuildCreatorCtrl {
         var selectedValue = selectElement.value;
         this._wrkCalc.amuletChange(selectedValue);
         var stats = this._wrkCalc.getStats();
-        this.displayStats(stats);
+        //this.displayStats(stats);
     }
 
     displayStats(stats) {
+        stats.forEach(function (value, key) {
+            if (value > 0) {
 
+            }
+        });
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const ctrl = new BuildCreatorCtrl();
-    ctrl.loadData();
+    if (sessionStorage.getItem("Username")) {
+        ctrl.loadData();
+    } else {
+        ctrl.logout();
+    }
 });

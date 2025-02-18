@@ -18,28 +18,36 @@ class DataCtrl
     private $chestplates;
     private $greaves;
     private $gauntlets;
+    private $archetypes;
+    private $builds;
 
     public function __construct()
     {
         $this->databaseWrk = new DatabaseWrk();
-        $this->sessionCtrl = new SessionCtrl();
         $this->amulets = array();
         $this->rings = array();
         $this->helmets = array();
         $this->chestplates = array();
         $this->greaves = array();
         $this->gauntlets = array();
+        $this->archetypes = array();
+        $this->builds = array();
     }
 
     public function getAmulets(): string
     {
-        $resultat = "<listAmulets>";
-        $this->amulets = $this->databaseWrk->getAmulets();
-        foreach ($this->amulets as $amulet) {
-            $resultat = $resultat . $amulet->asXML();
+        if (SessionCtrl::getInstance()->isConnected()) {
+            $resultat = "<listAmulets>";
+            $this->amulets = $this->databaseWrk->getAmulets();
+            foreach ($this->amulets as $amulet) {
+                $resultat = $resultat . $amulet->asXML();
+            }
+            $resultat = $resultat . "</listAmulets>";
+            return $resultat;
+        } else {
+            return "500";
         }
-        $resultat = $resultat . "</listAmulets>";
-        return $resultat;
+
     }
 
     public function getRings(): string
@@ -93,6 +101,22 @@ class DataCtrl
             $resultat = $resultat . $gauntlets->asXML();
         }
         $resultat = $resultat . "</listGauntlets>";
+        return $resultat;
+    }
+
+    public function getBuilds()
+    {
+        $resultat = null;
+        if (SessionCtrl::getInstance()->isConnected()) {
+
+            $user = SessionCtrl::getInstance()->currentUser();
+            $this->builds = $this->databaseWrk->getBuilds($user->getName());
+            $resultat = "<listBuilds>";
+            foreach ($this->builds as $build) {
+                $resultat = $resultat . $build->asXML();
+            }
+            $resultat = $resultat . "</listBuilds";
+        }
         return $resultat;
     }
 

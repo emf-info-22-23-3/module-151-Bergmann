@@ -14,10 +14,10 @@ class LoginCtrl
 
     public function login($username, $password): int
     {
-        $success = 500;
+        $success = 401;
         $resultat = $this->loginWrk->login($username, $password);
         if ($resultat) {
-            $this->sessionCtrl->startSession(new User($username, $password));
+            SessionCtrl::getInstance()->startSession(new User($username, $password));
             $success = 200;
         }
         return $success;
@@ -28,7 +28,7 @@ class LoginCtrl
         $success = 500;
         $resultat = $this->loginWrk->createUser($username, $password);
         if ($resultat) {
-            $this->sessionCtrl->startSession(new User($username, $password));
+            SessionCtrl::getInstance()->startSession(new User($username, $password));
             $success = 200;
         }
         return $success;
@@ -37,7 +37,7 @@ class LoginCtrl
     public function logout(): int
     {
         $success = 500;
-        $resultat = $this->sessionCtrl->destroySession();
+        $resultat = SessionCtrl::getInstance()->destroySession();
         if ($resultat) {
             $success = 200;
         }

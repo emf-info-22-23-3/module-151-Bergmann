@@ -18,7 +18,8 @@ export class Ctrl {
     }
 
     signupSuccess(data, text, jqXHR) {
-        console.log("successcallback")
+        var inputUsername = document.getElementById("inputUsername").value;
+        sessionStorage.setItem("Username", inputUsername);
         window.location.replace("http://localhost:8080/projet/client/pages/Buildcreator.html");
     }
 
@@ -35,6 +36,8 @@ export class Ctrl {
     }
 
     loginSuccess(data, text, jqXHR) {
+        var inputUsername = document.getElementById("inputUsername").value;
+        sessionStorage.setItem("Username", inputUsername);
         window.location.replace("http://localhost:8080/projet/client/pages/Buildcreator.html");
     }
 
