@@ -16,44 +16,44 @@ export class WrkCalculations {
         this._gauntlets = null;
         this._amulet = null;
         this._rings = new Map([
-            ["Ring1", null]
-            ["Ring2", null]
-            ["Ring3", null]
+            ["Ring1", null],
+            ["Ring2", null],
+            ["Ring3", null],
             ["Ring4", null]
         ]);
         this._stats = new Map([
-            ["Health", 100]
-            ["Stamina", 100]
-            ["Weight", 0]
-            ["Armor", 0]
-            ["AcidDamage", 0]
-            ["Firerate", 0]
-            ["SkillCooldown", 0]
-            ["ShockDamage", 0]
-            ["FireDamage", 0]
-            ["ArmorEffectiven", 0]
-            ["CorrosiveDamage", 0]
-            ["ReloadSpeed", 0]
-            ["SkillDuration", 0]
-            ["StaminaCost", 0]
-            ["OverloadedDamag", 0]
-            ["BurningDamage", 0]
-            ["ElementalDamage", 0]
-            ["ExplosiveDamage", 0]
-            ["RangedLifesteal", 0]
-            ["CritChance", 0]
-            ["GunRange", 0]
-            ["RelicSpeed", 0]
-            ["MeleeLifesteal", 0]
-            ["DodgeThreshhold", 0]
-            ["HPRegen", 0]
-            ["MeleeDamage", 0]
-            ["GunSwapSpeed", 0]
-            ["DamageReduction", 0]
-            ["CritDamage", 0]
-            ["AllDamage", 0]
-            ["ConsumableSpeed", 0]
-            ["MouvementSpeed", 0]
+            ["Health", 100],
+            ["Stamina", 100],
+            ["Weight", 0],
+            ["Armor", 0],
+            ["AcidDamage", 0],
+            ["Firerate", 0],
+            ["SkillCooldown", 0],
+            ["ShockDamage", 0],
+            ["FireDamage", 0],
+            ["ArmorEffectiven", 0],
+            ["CorrosiveDamage", 0],
+            ["ReloadSpeed", 0],
+            ["SkillDuration", 0],
+            ["StaminaCost", 0],
+            ["OverloadedDamag", 0],
+            ["BurningDamage", 0],
+            ["ElementalDamage", 0],
+            ["ExplosiveDamage", 0],
+            ["RangedLifesteal", 0],
+            ["CritChance", 0],
+            ["GunRange", 0],
+            ["RelicSpeed", 0],
+            ["MeleeLifesteal", 0],
+            ["DodgeThreshhold", 0],
+            ["HPRegen", 0],
+            ["MeleeDamage", 0],
+            ["GunSwapSpeed", 0],
+            ["DamageReduction", 0],
+            ["CritDamage", 0],
+            ["AllDamage", 0],
+            ["ConsumableSpeed", 0],
+            ["MouvementSpeed", 0],
             ["UnarmedDamage", 0]
         ]);
         WrkCalculations.instance = this;
@@ -62,32 +62,100 @@ export class WrkCalculations {
     amuletChange(amulet) {
         if (amulet instanceof Amulet) {
             this._amulet = amulet;
+            this.updateStats();
         }
     }
 
     ring1Change(ring1) {
         if (ring1 instanceof Ring) {
             this._rings.set("Ring1", ring1);
+            this.updateStats();
         }
     }
+
     ring2Change(ring1) {
         if (ring1 instanceof Ring) {
             this._rings.set("Ring1", ring1);
+            this.updateStats();
         }
     }
+
     ring3Change(ring1) {
         if (ring1 instanceof Ring) {
             this._rings.set("Ring1", ring1);
+            this.updateStats();
         }
     }
+
     ring4Change(ring1) {
         if (ring1 instanceof Ring) {
             this._rings.set("Ring1", ring1);
+            this.updateStats();
+        }
+    }
+
+    helmetChange(helmet) {
+        if (helmet instanceof Helmet) {
+            this._helmet = helmet;
+            this.updateStats();
+        }
+    }
+
+    chestplateChange(chestplate) {
+        if (chestplate instanceof Chestplate) {
+            this._chestplate = chestplate;
+            this.updateStats();
+        }
+    }
+
+    greavesChange(greaves) {
+        if (greaves instanceof Greaves) {
+            this._greaves = greaves;
+            this.updateStats();
+        }
+    }
+
+    gauntletsChange(gauntlets) {
+        if (gauntlets instanceof Gauntlets) {
+            this._gauntlets = gauntlets;
+            this.updateStats();
         }
     }
 
     updateStats() {
-        
+        this.calculateStats("Armor");
+        this.calculateStats("Health");
+        this.calculateStats("Stamina");
+        this.calculateStats("AcidDamage");
+        this.calculateStats("Firerate");
+        this.calculateStats("SkillCooldown");
+        this.calculateStats("ShockDamage");
+        this.calculateStats("FireDamage");
+        this.calculateStats("CorrosiveDamage");
+        this.calculateStats("ReloadSpeed");
+        this.calculateStats("SkillDuration");
+        this.calculateStats("StaminaCost");
+        this.calculateStats("OverloadedDamag");
+        this.calculateStats("BurningDamage");
+        this.calculateStats("ElementalDamage");
+        this.calculateStats("ExplosiveDamage");
+        this.calculateStats("RangedLifesteal");
+        this.calculateStats("CritChance");
+        this.calculateStats("GunRange");
+        this.calculateStats("RelicSpeed");
+        this.calculateStats("MeleeLifesteal");
+        this.calculateStats("DodgeThreshhold");
+        this.calculateStats("HPRegen");
+        this.calculateStats("MeleeDamage");
+        this.calculateStats("GunSwapSpeed");
+        this.calculateStats("CritDamage");
+        this.calculateStats("AllDamage");
+        this.calculateStats("ConsumableSpeed");
+        this.calculateStats("MouvementSpeed");
+        this.calculateStats("UnarmedDamage");
+        this.calculateWeight();
+        this.calculateDamageReduction();
+
     }
 
     calculateStats(stat) {
@@ -146,7 +214,7 @@ export class WrkCalculations {
                 }
             }
         });
-        this._stats.set("Armor", this._stats.get("Armor") * (1 + (this._stats.get("Armor") / 100)))
+        this._stats.set("Armor", this._stats.get("Armor") * (1 + (this._stats.get("ArmorEffectiven") / 100)))
     }
 
     calculateWeight() {
@@ -225,5 +293,8 @@ export class WrkCalculations {
         this._stats.set("DamageReduction", 1 - (1 - armorDR) * (1 - (flatDR / 100)));
     }
 
+    getStats() {
+        return this._stats;
+    }
 
 }

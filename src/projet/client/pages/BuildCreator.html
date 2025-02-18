@@ -13,22 +13,147 @@
 <body>
     <div id="flexboxStats">
         <label>Stats</label>
-        <div id="flexboxHealth">
+        <div id="flexboxHealth" class="flexboxSingleStat">
             <label>Health:</label>
             <label id="labelHealth">100</label>
         </div>
-        <div id="flexboxStamina">
+        <div id="flexboxStamina" class="flexboxSingleStat">
             <label>Stamina:</label>
             <label id="labelStamina">100</label>
         </div>
-        <div id="flexboxArmor">
+        <div id="flexboxArmor" class="flexboxSingleStat">
             <label>Armor:</label>
             <label id="labelArmor">0</label>
         </div>
-        <div id="flexboxWeight">
+        <div id="flexboxWeight" class="flexboxSingleStat">
             <label>Weight:</label>
             <label id="labelWeight">0</label>
         </div>
+        <div id="flexboxDR" class="flexboxSingleStat">
+            <label>Damage Reduction:</label>
+            <label id="labelDR">0</label>
+        </div>
+
+        <label id="titleDamage" class="defaultHidden">Damage</label>
+        <div id="flexboxAllDmg" class="flexboxSingleStat, defaultHidden">
+            <label>All Damage:</label>
+            <label id="labelAllDmg">0</label>
+        </div>
+        <div id="flexboxRangedDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Ranged Damage:</label>
+            <label id="labelRangedDmg">0</label>
+        </div>
+        <div id="flexboxMeleeDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Melee Damage:</label>
+            <label id="labelMeleeDmg">0</label>
+        </div>
+        <div id="flexboxUnarmedDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Unarmed Damage:</label>
+            <label id="labelUnarmedDmg">0</label>
+        </div>
+        <div id="flexboxExplosiveDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Explosive Damage:</label>
+            <label id="labelExplosiveDmg">0</label>
+        </div>
+        <div id="flexboxElementalDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Elemental Damage:</label>
+            <label id="labelElementalDmg">0</label>
+        </div>
+        <div id="flexboxAcidDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Acid Damage:</label>
+            <label id="labelAcidDmg">0</label>
+        </div>
+        <div id="flexboxCorrodedDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Corrosive Damage:</label>
+            <label id="labelCorrodedDmg">0</label>
+        </div>
+        <div id="flexboxShockDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Shock Damage:</label>
+            <label id="labelShockDmg">0</label>
+        </div>
+        <div id="flexboxOverloadedDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Overloaded Damage:</label>
+            <label id="labelOverloadedDmg">0</label>
+        </div>
+        <div id="flexboxFireDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Fire Damage:</label>
+            <label id="labelFireDmg">0</label>
+        </div>
+        <div id="flexboxBurningDmg" class="flexboxSingleStat, defaultHidden">
+            <label>Burning Damage:</label>
+            <label id="labelBurningDmg">0</label>
+        </div>
+
+        <label id="titleSkills" class="defaultHidden">Skills</label>
+        <div id="flexboxSkillCooldown" class="flexboxSingleStat, defaultHidden">
+            <label>Skill Cooldown:</label>
+            <label id="labelSkillCooldown">0</label>
+        </div>
+        <div id="flexboxSkillDuration" class="flexboxSingleStat, defaultHidden">
+            <label>Skill Duration:</label>
+            <label id="labelSkillDuration">0</label>
+        </div>
+
+        <label id="titleHeal" class="defaultHidden">Healing stats</label>
+        <div id="flexboxMeleeLifesteal" class="flexboxSingleStat, defaultHidden">
+            <label>Melee Lifesteal:</label>
+            <label id="labelMeleeLifesteal">0</label>
+        </div>
+        <div id="flexboxRangedLifesteal" class="flexboxSingleStat, defaultHidden">
+            <label>Ranged Lifesteal:</label>
+            <label id="labelRangedLifesteal">0</label>
+        </div>
+        <div id="flexboxHPRegen" class="flexboxSingleStat, defaultHidden">
+            <label>HP Regeneration:</label>
+            <label id="labelHPRegen">0</label>
+        </div>
+
+        <label id="titleFirearms" class="defaultHidden">Firearm stats</label>
+        <div id="flexboxReloadSpeed" class="flexboxSingleStat, defaultHidden">
+            <label>Reload Speed:</label>
+            <label id="labelReloadSpeed">0</label>
+        </div>
+        <div id="flexboxFirerate" class="flexboxSingleStat, defaultHidden">
+            <label>Fire Rate:</label>
+            <label id="labelFireRate">0</label>
+        </div>
+        <div id="flexboxGunRange" class="flexboxSingleStat, defaultHidden">
+            <label>Firearm Range:</label>
+            <label id="labelGunRange">0</label>
+        </div>
+        <div id="flexboxGunSwap" class="flexboxSingleStat, defaultHidden">
+            <label>Swap Speed:</label>
+            <label id="labelGunSwap">0</label>
+        </div>
+
+        <label id="titleCrit" class="defaultHidden">Crit stats</label>
+        <div id="flexboxCritChance" class="flexboxSingleStat, defaultHidden">
+            <label>Crit Chance:</label>
+            <label id="labelCritChance">0</label>
+        </div>
+        <div id="flexboxCritDamage" class="flexboxSingleStat, defaultHidden">
+            <label>Crit Damage:</label>
+            <label id="labelCritDamage">0</label>
+        </div>
+
+        <label id="titleMisc" class="defaultHidden">Misc stats</label>
+        <div id="flexboxStaminaCost" class="flexboxSingleStat, defaultHidden">
+            <label>Stamina Cost:</label>
+            <label id="labelStaminaCost">0</label>
+        </div>
+        <div id="flexboxMoveSpeed" class="flexboxSingleStat, defaultHidden">
+            <label>Mouvement Speed:</label>
+            <label id="labelMoveSpeed">0</label>
+        </div>
+        <div id="flexboxConsumableSpeed" class="flexboxSingleStat, defaultHidden">
+            <label>Consumable Speed:</label>
+            <label id="labelConsumableSpeed">0</label>
+        </div>
+        <div id="flexboxRelicSpeed" class="flexboxSingleStat, defaultHidden">
+            <label>Relic Speed:</label>
+            <label id="labelRelicSpeed">0</label>
+        </div>
+
     </div>
     <div id="flexboxItems">
         <div id="flexboxClasses">

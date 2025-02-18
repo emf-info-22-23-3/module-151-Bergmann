@@ -19,36 +19,20 @@ body{
     flex-direction: column;
     text-align: center;
     align-content: center;
-    width: 10%;
+    width: 12%;
 }
 
-#flexboxHealth {
+.flexboxSingleStat{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     flex-direction: row;
 }
 
-#flexboxStamina {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: row;
+.defaultHidden{
+    display: none;
 }
 
-#flexboxArmor {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
-#flexboxWeight {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: row;
-}
 
 #flexboxItems{
     width: 60%;

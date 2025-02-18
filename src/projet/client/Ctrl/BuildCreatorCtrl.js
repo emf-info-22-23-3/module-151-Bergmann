@@ -1,4 +1,5 @@
 import { WrkHttps } from "../Wrk/WrkHttps.js";
+import { WrkCalculations } from "../Wrk/WrkCalculations.js";
 import { Amulet } from "../beans/Amulet.js";
 import { Ring } from "../beans/Ring.js";
 import { Helmet } from "../beans/Helmet.js";
@@ -9,8 +10,9 @@ import { Gauntlets } from "../beans/Gauntlets.js";
 export class BuildCreatorCtrl {
     constructor() {
         this._wrk = new WrkHttps();
+        this._wrkCalc = new WrkCalculations();
         document.getElementById("buttonLogout").addEventListener("click", this.logout.bind(this));
-        document.getElementById("selectAmulets").addEventListener("change",this.amuletEvent.bind(this))
+        document.getElementById("selectAmulets").addEventListener("change", this.amuletEvent.bind(this))
     }
 
     loadData() {
@@ -204,10 +206,16 @@ export class BuildCreatorCtrl {
     }
 
 
-    amuletEvent(evt){
+    amuletEvent(evt) {
         var selectElement = document.getElementById("selectAmulets");
         var selectedValue = selectElement.value;
-        console.log(selectedValue);
+        this._wrkCalc.amuletChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        this.displayStats(stats);
+    }
+
+    displayStats(stats) {
+
     }
 }
 
