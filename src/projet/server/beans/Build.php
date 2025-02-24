@@ -127,10 +127,10 @@ class Build
             $result = $result . $this->gauntlets->asXML();
         }
         if (!empty($this->primaryArchetype)) {
-            $result = $result . "<PrimaryArchetype>" . $this->primaryArchetype->asXML() . "</PrimaryArchetype";
+            $result = $result . "<PrimaryArchetype>" . $this->primaryArchetype->asXML() . "</PrimaryArchetype>";
         }
         if (!empty($this->secondaryArchetype)) {
-            $result = $result . "<SecondaryArchetype>" . $this->secondaryArchetype->asXML() . "</SecondaryArchetype";
+            $result = $result . "<SecondaryArchetype>" . $this->secondaryArchetype->asXML() . "</SecondaryArchetype>";
         }
         if (!empty($this->ring1)) {
             $result = $result . "<Ring1>" . $this->ring1->asXML() . "</Ring1>";

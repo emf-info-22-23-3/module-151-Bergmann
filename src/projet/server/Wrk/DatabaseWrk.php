@@ -176,6 +176,40 @@ class DatabaseWrk
         return $this->builds;
     }
 
+    public function newBuild($build, $user)
+    {
+        $return = false;
+        if ($build instanceof Build) {
+            $query = "SELECT PK_User FROM t_user WHERE Name = :name";
+            $params = [':name' => ["$user", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            $pk = null;
+            foreach ($result as $data) {
+                $pk = $data["PK_User"];
+            }
+            $name = $build->getName();
+
+            $query = "INSERT INTO t_build (Name, FK_User, FK_Amulet, FK_Helmet, FK_Chestplate, FK_Gauntlets, FK_Greaves, FK_Archetype_Primary, FK_Archetype_Secondary) VALUES (:PK_Build, :Name, :FK_User, :FK_Amulet, :FK_Helmet, :FK_Chestplate, :FK_Gauntlets, :FK_Greaves, :FK_Archetype_Primary, :FK_Archetype_Secondary)";
+            $params = [
+                ':Name' => [$user, PDO::PARAM_STR],
+                ':FK_User' => [$pk, PDO::PARAM_STR],
+                ':FK_Amulet' => [null, PDO::PARAM_STR],
+                ':FK_Helmet' => [null, PDO::PARAM_STR],
+                ':FK_Chestplate' => [null, PDO::PARAM_STR],
+                ':FK_Gauntlets' => [null, PDO::PARAM_STR],
+                ':FK_Greaves' => [null, PDO::PARAM_STR],
+                ':FK_Archetype_Primary' => [null, PDO::PARAM_STR],
+                ':FK_Archetype_Secondary' => [null, PDO::PARAM_STR],
+            ];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            if ($result) {
+                $return = true;
+            }
+        }
+        return $return;
+
+    }
+
     public function getRingByPK($pk): Ring|null
     {
         $query = "SELECT * FROM t_ring WHERE PK_Ring = :pk";

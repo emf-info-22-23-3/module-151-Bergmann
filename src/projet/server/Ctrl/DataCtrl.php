@@ -37,13 +37,13 @@ class DataCtrl
     public function getAmulets(): string
     {
         if (SessionCtrl::getInstance()->isConnected()) {
-            $resultat = "<listAmulets>";
+            $result = "<listAmulets>";
             $this->amulets = $this->databaseWrk->getAmulets();
             foreach ($this->amulets as $amulet) {
-                $resultat = $resultat . $amulet->asXML();
+                $result = $result . $amulet->asXML();
             }
-            $resultat = $resultat . "</listAmulets>";
-            return $resultat;
+            $result = $result . "</listAmulets>";
+            return $result;
         } else {
             return "500";
         }
@@ -52,72 +52,83 @@ class DataCtrl
 
     public function getRings(): string
     {
-        $resultat = "<listRings>";
+        $result = "<listRings>";
         $this->rings = $this->databaseWrk->getRings();
         foreach ($this->rings as $ring) {
-            $resultat = $resultat . $ring->asXML();
+            $result = $result . $ring->asXML();
         }
-        $resultat = $resultat . "</listRings>";
-        return $resultat;
+        $result = $result . "</listRings>";
+        return $result;
     }
 
     public function getHelmets(): string
     {
-        $resultat = "<listHelmets>";
+        $result = "<listHelmets>";
         $this->helmets = $this->databaseWrk->getHelmets();
         foreach ($this->helmets as $helmet) {
-            $resultat = $resultat . $helmet->asXML();
+            $result = $result . $helmet->asXML();
         }
-        $resultat = $resultat . "</listHelmets>";
-        return $resultat;
+        $result = $result . "</listHelmets>";
+        return $result;
     }
     public function getChestplates(): string
     {
-        $resultat = "<listChestplates>";
+        $result = "<listChestplates>";
         $this->chestplates = $this->databaseWrk->getChestplates();
         foreach ($this->chestplates as $chestplate) {
-            $resultat = $resultat . $chestplate->asXML();
+            $result = $result . $chestplate->asXML();
         }
-        $resultat = $resultat . "</listChestplates>";
-        return $resultat;
+        $result = $result . "</listChestplates>";
+        return $result;
     }
 
     public function getGreaves(): string
     {
-        $resultat = "<listGreaves>";
+        $result = "<listGreaves>";
         $this->greaves = $this->databaseWrk->getGreaves();
         foreach ($this->greaves as $greaves) {
-            $resultat = $resultat . $greaves->asXML();
+            $result = $result . $greaves->asXML();
         }
-        $resultat = $resultat . "</listGreaves>";
-        return $resultat;
+        $result = $result . "</listGreaves>";
+        return $result;
     }
 
     public function getGauntlets(): string
     {
-        $resultat = "<listGauntlets>";
+        $result = "<listGauntlets>";
         $this->gauntlets = $this->databaseWrk->getGauntlets();
         foreach ($this->gauntlets as $gauntlets) {
-            $resultat = $resultat . $gauntlets->asXML();
+            $result = $result . $gauntlets->asXML();
         }
-        $resultat = $resultat . "</listGauntlets>";
-        return $resultat;
+        $result = $result . "</listGauntlets>";
+        return $result;
     }
 
     public function getBuilds()
     {
-        $resultat = null;
+        $result = null;
         if (SessionCtrl::getInstance()->isConnected()) {
 
             $user = SessionCtrl::getInstance()->currentUser();
             $this->builds = $this->databaseWrk->getBuilds($user->getName());
-            $resultat = "<listBuilds>";
+            $result = "<listBuilds>";
             foreach ($this->builds as $build) {
-                $resultat = $resultat . $build->asXML();
+                $result = $result . $build->asXML();
             }
-            $resultat = $resultat . "</listBuilds";
+            $result = $result . "</listBuilds>";
         }
-        return $resultat;
+        return $result;
+    }
+
+    public function createBuild($build)
+    {
+        $result = null;
+        if (SessionCtrl::getInstance()->isConnected()) {
+
+            $user = SessionCtrl::getInstance()->currentUser();
+            $result = $this->databaseWrk->newBuild($build, $user->getName());
+        }
+        return $result;
     }
 
 }

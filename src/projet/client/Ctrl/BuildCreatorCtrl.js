@@ -14,7 +14,11 @@ export class BuildCreatorCtrl {
         this._wrk = new WrkHttps();
         this._wrkCalc = new WrkCalculations();
         document.getElementById("buttonLogout").addEventListener("click", this.logout.bind(this));
-        document.getElementById("selectAmulets").addEventListener("change", this.amuletEvent.bind(this))
+        document.getElementById("buttonNewBuild").addEventListener("click", this.newBuildButton.bind(this));
+        document.getElementById("selectAmulets").addEventListener("change", this.amuletEvent.bind(this));
+        document.getElementById("selectBuilds").addEventListener("change", this.buildEvent.bind(this));
+
+
     }
 
     loadData() {
@@ -32,7 +36,6 @@ export class BuildCreatorCtrl {
     }
 
     amuletsSuccess(data, text, jqXHR) {
-        console.log("test")
         var amulets = document.getElementById("selectAmulets");
         $(data).find("Amulet").each((index, amuletElement) => {
             var amulet = new Amulet(
@@ -225,14 +228,14 @@ export class BuildCreatorCtrl {
     }
 
     getBuilds() {
-        this._wrk.getBuilds(this.getBuildsSuccess, this.getBuildsError);
+        this._wrk.getBuilds(this.getBuildsSuccess.bind(this), this.getBuildsError);
     }
 
     getBuildsSuccess(data, text, jqXHR) {
         var buildList = document.getElementById("selectBuilds");
         $(data).find("Build").each((index, buildElement) => {
             var name = $(buildElement).find("nameBuild").text();
-            var amulet = this.findAmulet($(buildElement).find("Amulet").text());
+            var amulet = this.findAmulet($(buildElement).find("Amulet"));
             var ring1 = this.findRing($(buildElement).find("Ring1"));
             var ring2 = this.findRing($(buildElement).find("Ring2"));
             var ring3 = this.findRing($(buildElement).find("Ring3"));
@@ -243,8 +246,9 @@ export class BuildCreatorCtrl {
             var gauntlets = this.findGauntlets($(buildElement).find("Gauntlets"));
             var primaryArchetype = this.findArchetype($(buildElement).find("PrimaryArchetype"));
             var secondaryArchetype = this.findArchetype($(buildElement).find("SecondaryArchetype"));
-            var build = new Build(name, amulet, helmet, chestplate, greaves, gauntlets, primaryArchetype, secondaryArchetype, ring1, ring2, ring3, ring4);
 
+            var build = new Build(name, amulet, helmet, chestplate, greaves, gauntlets, primaryArchetype, secondaryArchetype, ring1, ring2, ring3, ring4);
+            this._wrkCalc.addBuild(build);
             var option = document.createElement("option");
             option.text = build.toString();
             option.value = build;
@@ -253,7 +257,7 @@ export class BuildCreatorCtrl {
     }
 
     getBuildsError() {
-
+        console.log("error Builds")
     }
 
     logout() {
@@ -269,6 +273,21 @@ export class BuildCreatorCtrl {
         console.log("error logout");
     }
 
+    newBuildButton() {
+        let buildName = prompt("Please enter a Name for your Build:", "");
+        if (buildName != null) {
+            this._wrk.newBuild(buildName, this.newBuildSuccess.bind(this), this.newBuildError);
+        }
+    }
+
+    newBuildSuccess(data, text, jqXHR) {
+        this._wrk.getBuilds(this.getBuildsSuccess.bind(this), this.getBuildsError);
+    }
+
+    newBuildError(data, text, jqXHR) {
+
+    }
+
 
     amuletEvent(evt) {
         var selectElement = document.getElementById("selectAmulets");
@@ -276,6 +295,23 @@ export class BuildCreatorCtrl {
         this._wrkCalc.amuletChange(selectedValue);
         var stats = this._wrkCalc.getStats();
         //this.displayStats(stats);
+    }
+
+
+    buildEvent() {
+        var listBuilds = document.getElementById("selectBuilds");
+        var selectedBuild = listBuilds.value;
+        this._wrkCalc.buildChange(selectedBuild);
+        document.getElementById("selectAmulets").value = this._wrkCalc.getAmuletName();
+        document.getElementById("selectRings1").value = this._wrkCalc.getRing1Name();
+        document.getElementById("selectRings2").value = this._wrkCalc.getRing2Name();
+        document.getElementById("selectRings3").value = this._wrkCalc.getRing3Name();
+        document.getElementById("selectRings4").value = this._wrkCalc.getRing4Name();
+        document.getElementById("selectHelmets").value = this._wrkCalc.getHelmetName();
+        document.getElementById("selectChestplates").value = this._wrkCalc.getChestplateName();
+        document.getElementById("selectGreaves").value = this._wrkCalc.getGreavesName();
+        document.getElementById("selectGauntlets").value = this._wrkCalc.getGauntletsName();
+
     }
 
     displayStats(stats) {
@@ -355,6 +391,8 @@ export class BuildCreatorCtrl {
         );
         return archetype;
     }
+
+
 
 }
 

@@ -122,4 +122,15 @@ export class WrkHttps {
             error: errorCallback
         });
     }
+
+    newBuild(buildName, successCallback, errorCallback) {
+        $.ajax({
+            type: "PUT",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'buildName=' + buildName,
+            success: successCallback,
+            error: errorCallback
+        });
+    }
 }

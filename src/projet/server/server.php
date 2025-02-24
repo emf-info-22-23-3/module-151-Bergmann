@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "login") {
         $success = $loginCtrl->login($_POST['username'], $_POST['password']);
         //var_dump(http_response_code($success));
-         http_response_code($success);
+        http_response_code($success);
     }
     if ($_POST['action'] == "logout") {
         $success = $loginCtrl->logout();
@@ -48,5 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $success = $dataCtrl->getBuilds();
         echo $success;
     }
+}
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+    parse_str(file_get_contents('php://input'), $_PUT);
+    var_dump($_PUT);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+
 }
 
