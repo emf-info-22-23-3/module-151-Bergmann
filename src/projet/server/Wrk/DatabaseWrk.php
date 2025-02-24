@@ -7,7 +7,7 @@ include_once(realpath(__DIR__ . '/../beans/Chestplate.php'));
 include_once(realpath(__DIR__ . '/../beans/Greaves.php'));
 include_once(realpath(__DIR__ . '/../beans/Gauntlets.php'));
 include_once(realpath(__DIR__ . '/../beans/Archetype.php'));
-include_once(realpath(__DIR__ . '/../beans/Build.php.php'));
+include_once(realpath(__DIR__ . '/../beans/Build.php'));
 
 
 class DatabaseWrk
@@ -134,9 +134,12 @@ class DatabaseWrk
         $query = "SELECT PK_User FROM t_user WHERE Name = :name";
         $params = [':name' => ["$user", PDO::PARAM_STR]];
         $result = $this->dbConnection->selectQuery($query, $params);
-
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_User"];
+        }
         $query2 = "SELECT * from t_build WHERE FK_User =:pk";
-        $params2 = [':pk' => ["$result", PDO::PARAM_STR]];
+        $params2 = [':pk' => ["$pk", PDO::PARAM_STR]];
         $result2 = $this->dbConnection->selectQuery($query2, $params2);
         $counterBuilds = 0;
         foreach ($result2 as $data) {
@@ -152,19 +155,22 @@ class DatabaseWrk
             $build->setPrimaryArchetype($primaryArchetype);
             $build->setSecondaryArchetype($secondaryArchetype);
             $query3 = "SELECT * FROM tr_build_ring where FK_Build=:fkbuild";
-            $params3 = [':pk' => ["$pkBuild", PDO::PARAM_STR]];
+            $params3 = [':fkbuild' => ["$pkBuild", PDO::PARAM_STR]];
             $counterRings = 0;
             $temp = array();
             $result3 = $this->dbConnection->selectQuery($query3, $params3);
-            foreach ($result3 as $data3) {
-                $ring = $this->getRingByPK($data3["FK_Ring"]);
-                $temp[$counterRings] = $ring;
-                $counterRings++;
+            if (!empty($result3)) {
+                foreach ($result3 as $data3) {
+                    $ring = $this->getRingByPK($data3["FK_Ring"]);
+                    $temp[$counterRings] = $ring;
+                    $counterRings++;
+                }
+                $build->setRing1($temp[0]);
+                $build->setRing2($temp[1]);
+                $build->setRing3($temp[2]);
+                $build->setRing4($temp[3]);
             }
-            $build->setRing1($temp[0]);
-            $build->setRing2($temp[1]);
-            $build->setRing3($temp[2]);
-            $build->setRing4($temp[3]);
+
             $this->builds[$counterBuilds] = $build;
         }
         return $this->builds;

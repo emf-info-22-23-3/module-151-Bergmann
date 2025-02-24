@@ -31,7 +31,7 @@ export class Ctrl {
         var inputUsername = document.getElementById("inputUsername").value;
         var inputPassword = document.getElementById("inputPassword").value;
         if (inputUsername !== null || inputUsername !== null) {
-            this._wrk.connect(inputUsername, inputPassword, this.signupSuccess, this.signupError);
+            this._wrk.connect(inputUsername, inputPassword, this.loginSuccess, this.loginError);
         }
     }
 

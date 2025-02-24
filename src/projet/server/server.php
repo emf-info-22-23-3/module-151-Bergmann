@@ -1,11 +1,9 @@
 <?php
 include_once("./Ctrl/LoginCtrl.php");
 include_once("./Ctrl/DataCtrl.php");
-
+session_start();
 $loginCtrl = new LoginCtrl();
 $dataCtrl = new DataCtrl();
-
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == "signUp") {
         $success = $loginCtrl->createUser($_POST['username'], $_POST['password']);
@@ -13,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($_POST['action'] == "login") {
         $success = $loginCtrl->login($_POST['username'], $_POST['password']);
-        var_dump(http_response_code($success));
-        // http_response_code($success);
+        //var_dump(http_response_code($success));
+         http_response_code($success);
     }
     if ($_POST['action'] == "logout") {
         $success = $loginCtrl->logout();

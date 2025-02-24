@@ -16,7 +16,7 @@ class LoginWrk
         $params = [':name' => ["$username", PDO::PARAM_STR]];
         $result = $this->dbConnection->selectQuery($query, $params);
         foreach ($result as $data) {
-            if ($this->verifyPassword($data["Password"], $password)) {
+            if ($this->verifyPassword($password, $data["Password"])) {
                 $success = true;
             }
         }

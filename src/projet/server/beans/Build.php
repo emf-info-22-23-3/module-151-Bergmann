@@ -110,18 +110,40 @@ class Build
     public function asXML(): string
     {
         $result = "<Build>";
-        $result = $result . "<name>" . $this->name . "</name>";
-        $result = $result . $this->amulet->asXML();
-        $result = $result . $this->helmet->asXML();
-        $result = $result . $this->chestplate->asXML();
-        $result = $result . $this->greaves->asXML();
-        $result = $result . $this->gauntlets->asXML();
-        $result = $result . $this->primaryArchetype->asXML();
-        $result = $result . $this->secondaryArchetype->asXML();
-        $result = $result . $this->ring1->asXML();
-        $result = $result . $this->ring2->asXML();
-        $result = $result . $this->ring3->asXML();
-        $result = $result . $this->ring4->asXML();
+        $result = $result . "<nameBuild>" . $this->name . "</nameBuild>";
+        if (!empty($this->amulet)) {
+            $result = $result . $this->amulet->asXML();
+        }
+        if (!empty($this->helmet)) {
+            $result = $result . $this->helmet->asXML();
+        }
+        if (!empty($this->chestplate)) {
+            $result = $result . $this->chestplate->asXML();
+        }
+        if (!empty($this->greaves)) {
+            $result = $result . $this->greaves->asXML();
+        }
+        if (!empty($this->gauntlets)) {
+            $result = $result . $this->gauntlets->asXML();
+        }
+        if (!empty($this->primaryArchetype)) {
+            $result = $result . "<PrimaryArchetype>" . $this->primaryArchetype->asXML() . "</PrimaryArchetype";
+        }
+        if (!empty($this->secondaryArchetype)) {
+            $result = $result . "<SecondaryArchetype>" . $this->secondaryArchetype->asXML() . "</SecondaryArchetype";
+        }
+        if (!empty($this->ring1)) {
+            $result = $result . "<Ring1>" . $this->ring1->asXML() . "</Ring1>";
+        }
+        if (!empty($this->ring2)) {
+            $result = $result . "<Ring2>" . $this->ring2->asXML() . "</Ring2>";
+        }
+        if (!empty($this->ring3)) {
+            $result = $result . "<Ring3>" . $this->ring3->asXML() . "</Ring3>";
+        }
+        if (!empty($this->ring4)) {
+            $result = $result . "<Ring4>" . $this->ring4->asXML() . "</Ring4>";
+        }
         $result = $result . "</Build>";
         return $result;
     }

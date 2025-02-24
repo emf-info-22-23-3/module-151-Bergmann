@@ -6,6 +6,8 @@ import { Helmet } from "../beans/Helmet.js";
 import { Chestplate } from "../beans/Chestplate.js";
 import { Greaves } from "../beans/Greaves.js";
 import { Gauntlets } from "../beans/Gauntlets.js";
+import { Archetype } from "../beans/Archetype.js";
+import { Build } from "../beans/Build.js";
 
 export class BuildCreatorCtrl {
     constructor() {
@@ -22,6 +24,7 @@ export class BuildCreatorCtrl {
         this.getChestplates();
         this.getGreaves();
         this.getGauntlets();
+        this.getBuilds();
     }
 
     getAmulets() {
@@ -29,6 +32,7 @@ export class BuildCreatorCtrl {
     }
 
     amuletsSuccess(data, text, jqXHR) {
+        console.log("test")
         var amulets = document.getElementById("selectAmulets");
         $(data).find("Amulet").each((index, amuletElement) => {
             var amulet = new Amulet(
@@ -193,6 +197,65 @@ export class BuildCreatorCtrl {
         console.log("error gauntlets");
     }
 
+    getArchetypes() {
+        this._wrk.getArchetypes(this.archetypesSuccess, this.archetypesError);
+    }
+
+    archetypesSuccess() {
+        var archetypeList1 = document.getElementById("selectPrimaryArchetype");
+        var archetypeList2 = document.getElementById("selectSecondaryArchetype");
+        $(data).find("Archetype").each((index, archetypeElement) => {
+            var archetype = new Archetype(
+                $(gauntletsElement).find("name").text(),
+            );
+            var option1 = document.createElement("option");
+            option1.text = archetype.toString();
+            option1.value = archetype;
+            archetypeList1.appendChild(option1);
+
+            var option2 = document.createElement("option");
+            option2.text = archetype.toString();
+            option2.value = archetype;
+            archetypeList2.appendChild(option2);
+        });
+    }
+
+    archetypesError() {
+        console.log("error Archetypes");
+    }
+
+    getBuilds() {
+        this._wrk.getBuilds(this.getBuildsSuccess, this.getBuildsError);
+    }
+
+    getBuildsSuccess(data, text, jqXHR) {
+        var buildList = document.getElementById("selectBuilds");
+        $(data).find("Build").each((index, buildElement) => {
+            var name = $(buildElement).find("nameBuild").text();
+            var amulet = this.findAmulet($(buildElement).find("Amulet").text());
+            var ring1 = this.findRing($(buildElement).find("Ring1"));
+            var ring2 = this.findRing($(buildElement).find("Ring2"));
+            var ring3 = this.findRing($(buildElement).find("Ring3"));
+            var ring4 = this.findRing($(buildElement).find("Ring4"));
+            var helmet = this.findHelmet($(buildElement).find("Helmet"));
+            var chestplate = this.findChestplate($(buildElement).find("Chestplate"));
+            var greaves = this.findGreaves($(buildElement).find("Greaves"));
+            var gauntlets = this.findGauntlets($(buildElement).find("Gauntlets"));
+            var primaryArchetype = this.findArchetype($(buildElement).find("PrimaryArchetype"));
+            var secondaryArchetype = this.findArchetype($(buildElement).find("SecondaryArchetype"));
+            var build = new Build(name, amulet, helmet, chestplate, greaves, gauntlets, primaryArchetype, secondaryArchetype, ring1, ring2, ring3, ring4);
+
+            var option = document.createElement("option");
+            option.text = build.toString();
+            option.value = build;
+            buildList.appendChild(option);
+        });
+    }
+
+    getBuildsError() {
+
+    }
+
     logout() {
         this._wrk.deconnect(this.logoutSuccess, this.logoutError);
     }
@@ -222,6 +285,77 @@ export class BuildCreatorCtrl {
             }
         });
     }
+
+    findAmulet(data) {
+        var amulet = new Amulet(
+            $(data).find("name").text(),
+            $(data).find("modifiedvalue").text(),
+            $(data).find("modifier").text(),
+            $(data).find("ispercentage").text(),
+            $(data).find("description").text(),
+            $(data).find("secondaryvalue").text(),
+            $(data).find("secondarymodifier").text(),
+            $(data).find("ispercentagesecondary").text(),
+        );
+        return amulet;
+    }
+
+    findRing(data) {
+        var ring = new Ring(
+            $(data).find("name").text(),
+            $(data).find("modifiedvalue").text(),
+            $(data).find("modifier").text(),
+            $(data).find("ispercentage").text(),
+            $(data).find("description").text(),
+            $(data).find("secondaryvalue").text(),
+            $(data).find("secondarymodifier").text(),
+            $(data).find("ispercentagesecondary").text(),
+        );
+        return ring;
+    }
+
+    findHelmet(data) {
+        var helmet = new Helmet(
+            $(data).find("name").text(),
+            $(data).find("armor").text(),
+            $(data).find("weight").text(),
+        );
+        return helmet;
+    }
+
+    findChestplate(data) {
+        var chestplate = new Chestplate(
+            $(data).find("name").text(),
+            $(data).find("armor").text(),
+            $(data).find("weight").text(),
+        );
+        return chestplate;
+    }
+    findGreaves(data) {
+        var greaves = new Greaves(
+            $(data).find("name").text(),
+            $(data).find("armor").text(),
+            $(data).find("weight").text(),
+        );
+        return greaves;
+    }
+
+    findGauntlets(data) {
+        var gauntlets = new Gauntlets(
+            $(data).find("name").text(),
+            $(data).find("armor").text(),
+            $(data).find("weight").text(),
+        );
+        return gauntlets;
+    }
+
+    findArchetype(data) {
+        var archetype = new Archetype(
+            $(data).find("name").text(),
+        );
+        return archetype;
+    }
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {

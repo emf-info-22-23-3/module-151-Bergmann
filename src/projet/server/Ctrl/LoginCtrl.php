@@ -9,7 +9,6 @@ class LoginCtrl
     public function __construct()
     {
         $this->loginWrk = new LoginWrk();
-        $this->sessionCtrl = new SessionCtrl();
     }
 
     public function login($username, $password): int
@@ -17,8 +16,9 @@ class LoginCtrl
         $success = 401;
         $resultat = $this->loginWrk->login($username, $password);
         if ($resultat) {
-            SessionCtrl::getInstance()->startSession(new User($username, $password));
-            $success = 200;
+            if (SessionCtrl::getInstance()->startSession(new User($username, $password))) {
+                $success = 200;
+            }
         }
         return $success;
     }

@@ -19,7 +19,7 @@ export class WrkHttps {
         $.ajax({
             type: "POST",
             url: this.#URL,
-            data: 'action=connect&username=' + username + '&password=' + password,
+            data: 'action=login&username=' + username + '&password=' + password,
             success: successCallback,
             error: errorCallback
         });
@@ -96,6 +96,28 @@ export class WrkHttps {
             dataType: "xml",
             url: this.#URL,
             data: 'action=getGauntlets',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getBuilds(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getBuilds',
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    getArchetypes(successCallback, errorCallback) {
+        $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: this.#URL,
+            data: 'action=getArchetypes',
             success: successCallback,
             error: errorCallback
         });

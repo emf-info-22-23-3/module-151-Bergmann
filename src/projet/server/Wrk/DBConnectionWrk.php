@@ -33,7 +33,7 @@ class DBConnectionWrk
     }
 
 
-    public function selectQuery($query, $params = []): array|bool
+    public function selectQuery($query, $params = []): array
     {
         try {
             $statement = $this->pdo->prepare($query);
@@ -47,7 +47,6 @@ class DBConnectionWrk
             }
         } catch (PDOException $e) {
             echo "Query execution failed: " . $e->getMessage();
-            return false;
         }
     }
 
