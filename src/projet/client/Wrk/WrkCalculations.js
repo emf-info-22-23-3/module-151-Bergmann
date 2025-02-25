@@ -86,6 +86,16 @@ export class WrkCalculations {
         this.secondaryArchetypeChange(selectedbuild._secondaryArchetype);
     }
 
+    getBuild(buildname) {
+        var returnValue = null;
+        this._builds.forEach(build => {
+            if (build.name == buildname) {
+                returnValue = build;
+            }
+        });
+        return returnValue;
+    }
+
     amuletChange(amulet) {
         if (amulet instanceof Amulet) {
             this._amulet = amulet;

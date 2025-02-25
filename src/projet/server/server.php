@@ -50,11 +50,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-    parse_str(file_get_contents('php://input'), $_PUT);
-    var_dump($_PUT);
+    $rawData = file_get_contents("php://input");
+    $data = json_decode($rawData, true);
+    if ($data['action'] == 'CREATE') {
+        $success = $dataCtrl->createBuild($data['buildName']);
+        echo $success;
+    }
+    if ($data['action'] == 'UPDATE') {
+        $success = $dataCtrl->updateBuild($data);
+        echo $success;
+    }
+
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-
+    $rawData = file_get_contents("php://input");
+    $data = json_decode($rawData, true);
+    $success = $dataCtrl->deleteBuild($data['buildName']);
+    echo $success;
 }
 

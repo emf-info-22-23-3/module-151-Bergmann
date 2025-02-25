@@ -15,6 +15,8 @@ export class BuildCreatorCtrl {
         this._wrkCalc = new WrkCalculations();
         document.getElementById("buttonLogout").addEventListener("click", this.logout.bind(this));
         document.getElementById("buttonNewBuild").addEventListener("click", this.newBuildButton.bind(this));
+        document.getElementById("buttonDeleteBuild").addEventListener("click", this.deleteBuildButton.bind(this));
+        document.getElementById("buttonSaveBuild").addEventListener("click", this.saveBuildButton.bind(this));
         document.getElementById("selectAmulets").addEventListener("change", this.amuletEvent.bind(this));
         document.getElementById("selectBuilds").addEventListener("change", this.buildEvent.bind(this));
 
@@ -280,12 +282,37 @@ export class BuildCreatorCtrl {
         }
     }
 
+
     newBuildSuccess(data, text, jqXHR) {
         this._wrk.getBuilds(this.getBuildsSuccess.bind(this), this.getBuildsError);
     }
 
     newBuildError(data, text, jqXHR) {
+        console.log("Error create build");
+    }
 
+    deleteBuildButton() {
+        var selectElement = document.getElementById("selectBuilds");
+        var selectedValue = selectElement.value;
+        if (selectedValue !== null) {
+            this._wrk.deleteBuild(this._wrkCalc.getBuild(selectedValue).name, this.deleteSuccess.bind(this), this.deleteError);
+        }
+    }
+
+    saveBuildButton() {
+        var selectElement = document.getElementById("selectBuilds");
+        var selectedValue = selectElement.value;
+        if (selectedValue !== null) {
+            this._wrk.updateBuild(this._wrkCalc.getBuild(selectedValue), this.deleteSuccess.bind(this), this.deleteError);
+        }
+    }
+
+    deleteSuccess(data, text, jqXHR) {
+        this._wrk.getBuilds(this.getBuildsSuccess.bind(this), this.getBuildsError);
+    }
+
+    deleteError(data, text, jqXHR) {
+        console.log("Error delete build");
     }
 
 

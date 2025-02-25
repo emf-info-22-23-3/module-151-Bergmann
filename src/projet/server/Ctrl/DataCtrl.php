@@ -125,8 +125,29 @@ class DataCtrl
         $result = null;
         if (SessionCtrl::getInstance()->isConnected()) {
 
+            $newBuild = new Build($build, null, null, null, null, null);
             $user = SessionCtrl::getInstance()->currentUser();
-            $result = $this->databaseWrk->newBuild($build, $user->getName());
+            $result = $this->databaseWrk->newBuild($newBuild, $user->getName());
+        }
+        return $result;
+    }
+
+    public function updateBuild($buildAsArray)
+    {
+        $result = null;
+        if (SessionCtrl::getInstance()->isConnected()) {
+            $user = SessionCtrl::getInstance()->currentUser();
+            $newBuild = new Build();
+        }
+        return $result;
+    }
+
+    public function deleteBuild($buildname)
+    {
+        $result = null;
+        if (SessionCtrl::getInstance()->isConnected()) {
+            $user = SessionCtrl::getInstance()->currentUser();
+            $result = $this->databaseWrk->deleteBuild($buildname, $user->getName());
         }
         return $result;
     }

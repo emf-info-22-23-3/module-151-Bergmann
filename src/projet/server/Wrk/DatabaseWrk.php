@@ -189,9 +189,9 @@ class DatabaseWrk
             }
             $name = $build->getName();
 
-            $query = "INSERT INTO t_build (Name, FK_User, FK_Amulet, FK_Helmet, FK_Chestplate, FK_Gauntlets, FK_Greaves, FK_Archetype_Primary, FK_Archetype_Secondary) VALUES (:PK_Build, :Name, :FK_User, :FK_Amulet, :FK_Helmet, :FK_Chestplate, :FK_Gauntlets, :FK_Greaves, :FK_Archetype_Primary, :FK_Archetype_Secondary)";
+            $query = "INSERT INTO t_build (Name, FK_User, FK_Amulet, FK_Helmet, FK_Chestplate, FK_Gauntlets, FK_Greaves, FK_Archetype_Primary, FK_Archetype_Secondary) VALUES ( :Name, :FK_User, :FK_Amulet, :FK_Helmet, :FK_Chestplate, :FK_Gauntlets, :FK_Greaves, :FK_Archetype_Primary, :FK_Archetype_Secondary)";
             $params = [
-                ':Name' => [$user, PDO::PARAM_STR],
+                ':Name' => [$name, PDO::PARAM_STR],
                 ':FK_User' => [$pk, PDO::PARAM_STR],
                 ':FK_Amulet' => [null, PDO::PARAM_STR],
                 ':FK_Helmet' => [null, PDO::PARAM_STR],
@@ -208,6 +208,83 @@ class DatabaseWrk
         }
         return $return;
 
+    }
+
+    public function saveBuild($build, $user)
+    {
+        $return = false;
+        if ($build instanceof Build) {
+            $query = "SELECT PK_User FROM t_user WHERE Name = :name";
+            $params = [':name' => ["$user", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            $pkuser = null;
+            foreach ($result as $data) {
+                $pkuser = $data["PK_User"];
+            }
+
+            $name = $build->getName();
+            $pkbuild = null;
+
+            $query2 = "SELECT * from t_build WHERE FK_User=:fk AND Name=:Name";
+            $params2 = [
+                ':Name' => [$name, PDO::PARAM_STR],
+                ':FK_User' => [$pkuser, PDO::PARAM_STR],
+            ];
+            $result2 = $this->dbConnection->selectQuery($query2, $params2);
+            foreach ($result2 as $data) {
+                $pkbuild = $data['PK_Build'];
+            }
+
+            $query3 = "UPDATE t_build SET FK_Amulet =:fkamulet, FK_Helmet =:fkhelmet, FK_Chestplate =:fkchestplate, FK_Gauntlets =:fkgauntlets, FK_Greaves =:greaves, FK_Archetype_Primary:fkarchetypeprimary, FK_Archetype_Secondary=:fkarchetypesecondary";
+            $params3 = [
+                ':fkamulet' => [$this->getPKAmuletByName($build->getAmulet()->getName()), PDO::PARAM_STR],
+                ':fkhelmet' => [$this->getPKHelmetByName($build->getHelmet()->getName()), PDO::PARAM_STR],
+                ':fkchestplate' => [$this->getPKChestplateByName($build->getChestplate()->getName()), PDO::PARAM_STR],
+                ':fkgreaves' => [$this->getPKGreavesByName($build->getGreaves()->getName()), PDO::PARAM_STR],
+                ':fkgauntlets' => [$this->getPKGauntletsByName($build->getGauntlets()->getName()), PDO::PARAM_STR],
+                ':fkarchetypeprimary' => [$this->getPKArchetypeByName($build->getPrimaryArchetype()->getName()), PDO::PARAM_STR],
+                ':fkarchetypesecondary' => [$this->getPKArchetypeByName($build->getSecondaryArchetype()->getName()), PDO::PARAM_STR],
+
+            ];
+            $result3 = $this->dbConnection->executeQuery($query3, $params3);
+
+            $query4 = "DELETE FROM tr_build_ring where FK_Build=:fkbuild";
+            $params4 = [':fkbuild' => ["$pkbuild", PDO::PARAM_STR]];
+            $result4 = $this->dbConnection->executeQuery($query4, $params4);
+            $listRings = $build->getAllRings();
+            foreach ($listRings as $ring) {
+                $query5 = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
+                $params5 = [
+                    ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
+                    ':fkring' => [$this->getPKRingByName($ring->getName()), PDO::PARAM_STR],
+                ];
+                $result5 = $this->dbConnection->executeQuery($query5, $params5);
+
+            }
+        }
+    }
+
+    public function deleteBuild($buildname, $user)
+    {
+        $return = false;
+        $pkuser = $this->getPKUserByName($user);
+        $pkbuild = $this->getPKBuild($buildname, $pkuser);
+
+        $query = "DELETE FROM tr_build_ring where FK_Build =:fkbuild";
+        $params = [':fkbuild' => ["$pkbuild", PDO::PARAM_STR]];
+        $result = $this->dbConnection->executeQuery($query, $params);
+        if ($result === true) {
+            $query2 = "DELETE FROM t_build where PK_Build =:pkbuild AND FK_User=:fkuser";
+            $params2 = [
+                ':pkbuild' => ["$pkbuild", PDO::PARAM_STR],
+                ':fkuser' => ["$pkuser", PDO::PARAM_STR]
+            ];
+            $result2 = $this->dbConnection->executeQuery($query2, $params2);
+            if ($result2 === true) {
+                $return = true;
+            }
+        }
+        return $return;
     }
 
     public function getRingByPK($pk): Ring|null
@@ -293,5 +370,116 @@ class DatabaseWrk
             $archetype = new Archetype($data['Name']);
         }
         return $archetype;
+    }
+
+    public function getPKRingByName($name)
+    {
+        $query = "SELECT * FROM t_ring WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Ring"];
+        }
+        return $pk;
+    }
+
+    public function getPKAmuletByName($name)
+    {
+        $query = "SELECT * FROM t_amulet WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Amulet"];
+        }
+        return $pk;
+    }
+
+    public function getPKHelmetByName($name)
+    {
+        $query = "SELECT * FROM t_helmet WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Helmet"];
+        }
+        return $pk;
+    }
+
+    public function getPKChestplateByName($name)
+    {
+        $query = "SELECT * FROM t_chestplate WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Chestplate"];
+        }
+        return $pk;
+    }
+
+    public function getPKGreavesByName($name)
+    {
+        $query = "SELECT * FROM t_greaves WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Greaves"];
+        }
+        return $pk;
+    }
+
+    public function getPKGauntletsByName($name)
+    {
+        $query = "SELECT * FROM t_gauntlets WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Gauntlets"];
+        }
+        return $pk;
+    }
+
+    public function getPKArchetypeByName($name)
+    {
+        $query = "SELECT * FROM t_archetype WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pk = null;
+        foreach ($result as $data) {
+            $pk = $data["PK_Archetype"];
+        }
+        return $pk;
+    }
+
+    public function getPKUserByName($name)
+    {
+        $query = "SELECT PK_User FROM t_user WHERE Name = :name";
+        $params = [':name' => ["$name", PDO::PARAM_STR]];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pkuser = null;
+        foreach ($result as $data) {
+            $pkuser = $data["PK_User"];
+        }
+        return $pkuser;
+    }
+
+    public function getPKBuild($name, $fkUser)
+    {
+        $query = "SELECT PK_Build FROM t_Build WHERE Name = :name AND FK_User =:fkuser";
+        $params = [
+            ':name' => ["$name", PDO::PARAM_STR],
+            ':fkuser' => ["$fkUser", PDO::PARAM_STR]
+        ];
+        $result = $this->dbConnection->selectQuery($query, $params);
+        $pkbuild = null;
+        foreach ($result as $data) {
+            $pkbuild = $data["PK_Build"];
+        }
+        return $pkbuild;
     }
 }

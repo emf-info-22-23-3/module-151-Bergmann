@@ -40,6 +40,72 @@ class Build
     {
         return $this->name;
     }
+    public function getAmulet()
+    {
+        return $this->amulet;
+    }
+
+    public function getHelmet()
+    {
+        return $this->helmet;
+    }
+
+    public function getChestplate()
+    {
+        return $this->chestplate;
+    }
+
+    public function getGreaves()
+    {
+        return $this->greaves;
+    }
+    public function getGauntlets()
+    {
+        return $this->gauntlets;
+    }
+    public function getRing1()
+    {
+        return $this->ring1;
+    }
+    public function getRing2()
+    {
+        return $this->ring2;
+    }
+    public function getRing3()
+    {
+        return $this->ring3;
+    }
+    public function getRing4()
+    {
+        return $this->ring4;
+    }
+    public function getPrimaryArchetype()
+    {
+        return $this->primaryArchetype;
+    }
+    public function getSecondaryArchetype()
+    {
+        return $this->secondaryArchetype;
+    }
+
+    public function getAllRings()
+    {
+        $return = array();
+        if (!empty($this->ring1)) {
+            array_push($return, $this->ring1);
+        }
+        if (!empty($this->ring2)) {
+            array_push($return, $this->ring2);
+        }
+        if (!empty($this->ring3)) {
+            array_push($return, $this->ring3);
+        }
+        if (!empty($this->ring4)) {
+            array_push($return, $this->ring4);
+        }
+        return $return;
+
+    }
     public function setAmulet($amulet)
     {
         if ($amulet instanceof Amulet) {

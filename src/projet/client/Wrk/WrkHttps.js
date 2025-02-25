@@ -125,10 +125,38 @@ export class WrkHttps {
 
     newBuild(buildName, successCallback, errorCallback) {
         $.ajax({
-            type: "PUT",
-            dataType: "xml",
+            method: "PUT",
+            contentType: 'application/json',
             url: this.#URL,
-            data: 'buildName=' + buildName,
+            data: JSON.stringify({
+                action: "CREATE",
+                buildName
+            }),
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    updateBuild(build, successCallback, errorCallback) {
+        $.ajax({
+            method: "PUT",
+            contentType: 'application/json',
+            url: this.#URL,
+            data: JSON.stringify({
+                action: "UPDATE",
+                build
+            }),
+            success: successCallback,
+            error: errorCallback
+        });
+    }
+
+    deleteBuild(buildName, successCallback, errorCallback) {
+        $.ajax({
+            method: "DELETE",
+            contentType: 'application/json',
+            url: this.#URL,
+            data: JSON.stringify({ buildName }),
             success: successCallback,
             error: errorCallback
         });
