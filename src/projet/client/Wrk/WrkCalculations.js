@@ -61,6 +61,13 @@ export class WrkCalculations {
             ["UnarmedDamage", 0]
         ]);
         this._builds = new Array();
+        this._amuletsList = new Array();
+        this._helmetsList = new Array();
+        this._chestplatesList = new Array();
+        this._greavesList = new Array();
+        this._gauntletsList = new Array();
+        this._archetypesList = new Array();
+        this._ringsList = new Array();
         WrkCalculations.instance = this;
     }
 
@@ -70,6 +77,49 @@ export class WrkCalculations {
             this._builds.push(build);
         }
     }
+
+    addAmulet(amulet) {
+        if (amulet instanceof Amulet) {
+            this._amuletsList.push(amulet);
+        }
+    }
+
+    addRing(ring) {
+        if (ring instanceof Ring) {
+            this._ringsList.push(ring);
+        }
+    }
+
+    addHelmet(helmet) {
+        if (helmet instanceof Helmet) {
+            this._helmetsList.push(helmet);
+        }
+    }
+
+    addChestplate(chestplate) {
+        if (chestplate instanceof Chestplate) {
+            this._chestplatesList.push(chestplate);
+        }
+    }
+
+    addGreaves(greaves) {
+        if (greaves instanceof Greaves) {
+            this._greavesList.push(greaves);
+        }
+    }
+
+    addGauntlets(gauntlets) {
+        if (gauntlets instanceof Gauntlets) {
+            this._gauntletsList.push(gauntlets);
+        }
+    }
+
+    addArchetype(archetype) {
+        if (archetype instanceof Archetype) {
+            this._archetypesList.push(archetype);
+        }
+    }
+
 
     buildChange(buildname) {
         var selectedbuild = this._builds.find(build => build.name === buildname);
@@ -96,53 +146,74 @@ export class WrkCalculations {
         return returnValue;
     }
 
-    amuletChange(amulet) {
-        if (amulet instanceof Amulet) {
-            this._amulet = amulet;
-            this.updateStats();
-        }
+    amuletChange(newAmulet) {
+        var returnValue = null;
+        this._amuletsList.forEach(amulet => {
+            if (amulet._name == newAmulet) {
+                returnValue = newAmulet;
+            }
+        });
+        return returnValue;
     }
 
     ring1Change(ring1) {
-        if (ring1 instanceof Ring) {
-            this._rings.set("Ring1", ring1);
-            this.updateStats();
-        }
+        var returnValue = null;
+        this._ringsList.forEach(ring => {
+            if (ring._name == ring1) {
+                returnValue = ring1;
+            }
+        });
+        return returnValue;
     }
 
     ring2Change(ring2) {
-        if (ring2 instanceof Ring) {
-            this._rings.set("Ring2", ring2);
-            this.updateStats();
-        }
+        var returnValue = null;
+        this._ringsList.forEach(ring => {
+            if (ring._name == ring2) {
+                returnValue = ring2;
+            }
+        });
+        return returnValue;
     }
 
     ring3Change(ring3) {
-        if (ring3 instanceof Ring) {
-            this._rings.set("Ring3", ring3);
-            this.updateStats();
-        }
+        var returnValue = null;
+        this._ringsList.forEach(ring => {
+            if (ring._name == ring3) {
+                returnValue = ring3;
+            }
+        });
+        return returnValue;
     }
 
     ring4Change(ring4) {
-        if (ring4 instanceof Ring) {
-            this._rings.set("Ring4", ring4);
-            this.updateStats();
-        }
+        var returnValue = null;
+        this._ringsList.forEach(ring => {
+            if (ring._name == ring4) {
+                returnValue = ring4;
+            }
+        });
+        return returnValue;
     }
 
-    helmetChange(helmet) {
-        if (helmet instanceof Helmet) {
-            this._helmet = helmet;
-            this.updateStats();
-        }
+    helmetChange(newhelmet) {
+        var returnValue = null;
+        this._helmetList.forEach(helmet => {
+            if (helmet._name == newhelmet) {
+                returnValue = newhelmet;
+            }
+        });
+        return returnValue;
     }
 
-    chestplateChange(chestplate) {
-        if (chestplate instanceof Chestplate) {
-            this._chestplate = chestplate;
-            this.updateStats();
-        }
+    chestplateChange(newchestplate) {
+        var returnValue = null;
+        this._chestplatesList.forEach(chestplate => {
+            if (chestplate._name == newchestplate) {
+                returnValue = newchestplate;
+            }
+        });
+        return returnValue;
     }
 
     greavesChange(greaves) {
@@ -433,4 +504,5 @@ export class WrkCalculations {
         }
         return resultat;
     }
+
 }
