@@ -137,7 +137,62 @@ class DataCtrl
         $result = null;
         if (SessionCtrl::getInstance()->isConnected()) {
             $user = SessionCtrl::getInstance()->currentUser();
-            $newBuild = new Build();
+            $amulet = null;
+            $helmet = null;
+            $chestplate = null;
+            $greaves = null;
+            $gauntlets = null;
+            $primaryArchetype = null;
+            $secondaryArchetype = null;
+            $ring1 = null;
+            $ring2 = null;
+            $ring3 = null;
+            $ring4 = null;
+            if (!empty($buildAsArray["build"]["_amulet"])) {
+                $amulet = new Amulet($buildAsArray["build"]["_amulet"]["_name"], $buildAsArray["build"]["_amulet"]["_modifiedValue"], $buildAsArray["build"]["_amulet"]["_modifier"], $buildAsArray["build"]["_amulet"]["_isPercentage"], $buildAsArray["build"]["_amulet"]["_description"]);
+                $amulet->setSecondaryStats($buildAsArray["build"]["_amulet"]["_secondaryModifier"], $buildAsArray["build"]["_amulet"]["_secondaryValue"], $buildAsArray["build"]["_amulet"]["_isPercentageSecondary"]);
+            }
+            if (!empty($buildAsArray["build"]["_ring1"])) {
+                $ring1 = new Ring($buildAsArray["build"]["_ring1"]["_name"], $buildAsArray["build"]["_ring1"]["_modifiedValue"], $buildAsArray["build"]["_ring1"]["_modifier"], $buildAsArray["build"]["_ring1"]["_isPercentage"], $buildAsArray["build"]["_ring1"]["_description"]);
+                $ring1->setSecondaryStats($buildAsArray["build"]["_ring1"]["_secondaryModifier"], $buildAsArray["build"]["_ring1"]["_secondaryValue"], $buildAsArray["build"]["_ring1"]["_isPercentageSecondary"]);
+            }
+            if (!empty($buildAsArray["build"]["_ring2"])) {
+                $ring2 = new Ring($buildAsArray["build"]["_ring2"]["_name"], $buildAsArray["build"]["_ring2"]["_modifiedValue"], $buildAsArray["build"]["_ring2"]["_modifier"], $buildAsArray["build"]["_ring2"]["_isPercentage"], $buildAsArray["build"]["_ring2"]["_description"]);
+                $ring2->setSecondaryStats($buildAsArray["build"]["_ring2"]["_secondaryModifier"], $buildAsArray["build"]["_ring2"]["_secondaryValue"], $buildAsArray["build"]["_ring2"]["_isPercentageSecondary"]);
+            }
+            if (!empty($buildAsArray["build"]["_ring3"])) {
+                $ring3 = new Ring($buildAsArray["build"]["_ring3"]["_name"], $buildAsArray["build"]["_ring3"]["_modifiedValue"], $buildAsArray["build"]["_ring3"]["_modifier"], $buildAsArray["build"]["_ring3"]["_isPercentage"], $buildAsArray["build"]["_ring3"]["_description"]);
+                $ring3->setSecondaryStats($buildAsArray["build"]["_ring3"]["_secondaryModifier"], $buildAsArray["build"]["_ring3"]["_secondaryValue"], $buildAsArray["build"]["_ring3"]["_isPercentageSecondary"]);
+            }
+            if (!empty($buildAsArray["build"]["_ring4"])) {
+                $ring4 = new Ring($buildAsArray["build"]["_ring4"]["_name"], $buildAsArray["build"]["_ring4"]["_modifiedValue"], $buildAsArray["build"]["_ring4"]["_modifier"], $buildAsArray["build"]["_ring4"]["_isPercentage"], $buildAsArray["build"]["_ring4"]["_description"]);
+                $ring4->setSecondaryStats($buildAsArray["build"]["_ring4"]["_secondaryModifier"], $buildAsArray["build"]["_ring4"]["_secondaryValue"], $buildAsArray["build"]["_ring4"]["_isPercentageSecondary"]);
+            }
+            if (!empty($buildAsArray["build"]["_helmet"])) {
+                $helmet = new Helmet($buildAsArray["build"]["_helmet"]["_name"], $buildAsArray["build"]["_helmet"]["_armor"], $buildAsArray["build"]["_helmet"]["_weight"]);
+            }
+            if (!empty($buildAsArray["build"]["_chestplate"])) {
+                $chestplate = new Chestplate($buildAsArray["build"]["_chestplate"]["_name"], $buildAsArray["build"]["_chestplate"]["_armor"], $buildAsArray["build"]["_chestplate"]["_weight"]);
+            }
+            if (!empty($buildAsArray["build"]["_greaves"])) {
+                $greaves = new Greaves($buildAsArray["build"]["_greaves"]["_name"], $buildAsArray["build"]["_greaves"]["_armor"], $buildAsArray["build"]["_greaves"]["_weight"]);
+            }
+            if (!empty($buildAsArray["build"]["_gauntlets"])) {
+                $gauntlets = new Gauntlets($buildAsArray["build"]["_gauntlets"]["_name"], $buildAsArray["build"]["_gauntlets"]["_armor"], $buildAsArray["build"]["_gauntlets"]["_weight"]);
+            }
+            if (!empty($buildAsArray["build"]["_primaryArchetype"])) {
+                $primaryArchetype = new Archetype($buildAsArray["build"]["_primaryArchetype"]["_name"]);
+            }
+            if (!empty($buildAsArray["build"]["_secondaryArchetype"])) {
+                $secondaryArchetype = new Archetype($buildAsArray["build"]["_secondaryArchetype"]["_name"]);
+            }
+
+            $build = new Build($buildAsArray["build"]["_name"], $amulet, $helmet, $chestplate, $greaves, $gauntlets);
+            $build->setRing1($ring1);
+            $build->setRing2($ring2);
+            $build->setRing3($ring3);
+            $build->setRing4($ring4);
+            $result = $this->databaseWrk->saveBuild($build, $user->getName());
         }
         return $result;
     }

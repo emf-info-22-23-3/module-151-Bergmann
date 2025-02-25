@@ -91,16 +91,16 @@ class Build
     public function getAllRings()
     {
         $return = array();
-        if (!empty($this->ring1)) {
+        if (!is_null($this->ring1)) {
             array_push($return, $this->ring1);
         }
-        if (!empty($this->ring2)) {
+        if (!is_null($this->ring2)) {
             array_push($return, $this->ring2);
         }
-        if (!empty($this->ring3)) {
+        if (!is_null($this->ring3)) {
             array_push($return, $this->ring3);
         }
-        if (!empty($this->ring4)) {
+        if (!is_null($this->ring4)) {
             array_push($return, $this->ring4);
         }
         return $return;
