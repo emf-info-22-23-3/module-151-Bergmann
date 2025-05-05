@@ -188,7 +188,9 @@ class DatabaseWrk
             foreach ($result as $data) {
                 $pk = $data["PK_User"];
             }
-            $name = $build->getName();
+
+            //remove all special characters that could lead to a Html, Js injection
+            $name = $this->sanitizeInput($build->getName());
 
             $query = "INSERT INTO t_build (Name, FK_User, FK_Amulet, FK_Helmet, FK_Chestplate, FK_Gauntlets, FK_Greaves, FK_Archetype_Primary, FK_Archetype_Secondary) VALUES ( :Name, :FK_User, :FK_Amulet, :FK_Helmet, :FK_Chestplate, :FK_Gauntlets, :FK_Greaves, :FK_Archetype_Primary, :FK_Archetype_Secondary)";
             $params = [
@@ -230,7 +232,6 @@ class DatabaseWrk
             $result = $this->dbConnection->selectQuery($query, $params);
 
             if (!empty($result)) {
-                $pkuser = $result[0]['PK_User'];
                 $pkbuild = $result[0]['PK_Build'];
 
                 // Update build gear and archetypes
@@ -262,13 +263,11 @@ class DatabaseWrk
                 $paramsDelete = [':fkbuild' => [$pkbuild, PDO::PARAM_STR]];
                 $this->dbConnection->executeQuery($queryDelete, $paramsDelete);
 
-                // Insert new ring associations with validation
                 $listRings = $build->getAllRings();
-                $ringCount = count($listRings);
 
-                // Validate that ring count is within 0–4
-                if ($ringCount >= 0 && $ringCount <= 4) {
-                    foreach ($listRings as $ring) {
+
+                foreach ($listRings as $ring) {
+                    if (!empty($ring->getName())) {
                         $queryInsert = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
                         $paramsInsert = [
                             ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
@@ -278,12 +277,12 @@ class DatabaseWrk
                         if ($resultInsert === true) {
                             $return = true;
                         }
+                    } else {
+                        $result = true;
                     }
-                } else {
-                    // Optionally log this or throw an exception
-                    // e.g., throw new InvalidArgumentException("Invalid number of rings: $ringCount");
-                    return false;
+
                 }
+
 
             }
         }
@@ -315,63 +314,74 @@ class DatabaseWrk
         return $return;
     }
 
-    public function getRingByPK($pk): Ring|null
+    public function getRingByPK($pk): Ring
     {
-        $query = "SELECT * FROM t_ring WHERE PK_Ring = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $ring = null;
-        foreach ($result as $data) {
-            $ring = new Ring($data['Name'], $data['ModifiedValue'], $data['Modifier'], $data['isPercentage'], $data['description']);
-            $ring->setSecondaryStats($data['secondaryModifier'], $data['secondaryValue'], $data['isPercentageSecondary']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_ring WHERE PK_Ring = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $ring = new Ring($data['Name'], $data['ModifiedValue'], $data['Modifier'], $data['isPercentage'], $data['description']);
+                $ring->setSecondaryStats($data['secondaryModifier'], $data['secondaryValue'], $data['isPercentageSecondary']);
+            }
         }
         return $ring;
+
     }
-    public function getAmuletByPK($pk): Amulet|null
+    public function getAmuletByPK($pk): Amulet
     {
-        $query = "SELECT * FROM t_amulet WHERE PK_Amulet = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $amulet = null;
-        foreach ($result as $data) {
-            $amulet = new Amulet($data['Name'], $data['ModifiedValue'], $data['Modifier'], $data['isPercentage'], $data['description']);
-            $amulet->setSecondaryStats($data['secondaryModifier'], $data['secondaryValue'], $data['isPercentageSecondary']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_amulet WHERE PK_Amulet = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $amulet = new Amulet($data['Name'], $data['ModifiedValue'], $data['Modifier'], $data['isPercentage'], $data['description']);
+                $amulet->setSecondaryStats($data['secondaryModifier'], $data['secondaryValue'], $data['isPercentageSecondary']);
+            }
         }
         return $amulet;
     }
 
     public function getHelmetByPK($pk)
     {
-        $query = "SELECT * FROM t_helmet WHERE PK_Helmet = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $helmet = null;
-        foreach ($result as $data) {
-            $helmet = new Helmet($data['Name'], $data['Armor'], $data['Weight']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_helmet WHERE PK_Helmet = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $helmet = new Helmet($data['Name'], $data['Armor'], $data['Weight']);
+            }
         }
         return $helmet;
     }
 
     public function getChestplateByPK($pk)
     {
-        $query = "SELECT * FROM t_chestplate WHERE PK_Chestplate = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $chestplate = null;
-        foreach ($result as $data) {
-            $chestplate = new Chestplate($data['Name'], $data['Armor'], $data['Weight']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_chestplate WHERE PK_Chestplate = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $chestplate = new Chestplate($data['Name'], $data['Armor'], $data['Weight']);
+            }
         }
         return $chestplate;
     }
 
     public function getGreavesByPK($pk)
     {
-        $query = "SELECT * FROM t_greaves WHERE PK_Greaves = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $greaves = null;
-        foreach ($result as $data) {
-            $greaves = new Greaves($data['Name'], $data['Armor'], $data['Weight']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_greaves WHERE PK_Greaves = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $greaves = new Greaves($data['Name'], $data['Armor'], $data['Weight']);
+            }
         }
         return $greaves;
     }
@@ -390,12 +400,14 @@ class DatabaseWrk
 
     public function getArchetypeByPK($pk)
     {
-        $query = "SELECT * FROM t_archetype WHERE PK_Archetype = :pk";
-        $params = [':pk' => ["$pk", PDO::PARAM_STR]];
-        $result = $this->dbConnection->selectQuery($query, $params);
         $archetype = null;
-        foreach ($result as $data) {
-            $archetype = new Archetype($data['Name']);
+        if (!empty($pk)) {
+            $query = "SELECT * FROM t_archetype WHERE PK_Archetype = :pk";
+            $params = [':pk' => ["$pk", PDO::PARAM_STR]];
+            $result = $this->dbConnection->selectQuery($query, $params);
+            foreach ($result as $data) {
+                $archetype = new Archetype($data['Name']);
+            }
         }
         return $archetype;
     }
@@ -517,7 +529,7 @@ class DatabaseWrk
     {
         $pkbuild = null;
         if (!empty($name)) {
-            $query = "SELECT PK_Build FROM t_Build WHERE Name = :name AND FK_User =:fkuser";
+            $query = "SELECT PK_Build FROM t_build WHERE Name = :name AND FK_User =:fkuser";
             $params = [
                 ':name' => ["$name", PDO::PARAM_STR],
                 ':fkuser' => ["$fkUser", PDO::PARAM_STR]
@@ -528,5 +540,14 @@ class DatabaseWrk
             }
         }
         return $pkbuild;
+    }
+
+    public function sanitizeInput(string $input): string
+    {
+        $stripped = strip_tags($input);
+
+        $safe = htmlspecialchars($stripped, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+        return $safe;
     }
 }

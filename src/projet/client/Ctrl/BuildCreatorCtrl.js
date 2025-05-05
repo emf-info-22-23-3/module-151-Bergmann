@@ -327,7 +327,7 @@ export class BuildCreatorCtrl {
         var selectElement = document.getElementById("selectBuilds");
         var selectedValue = selectElement.value;
         if (selectedValue !== null) {
-            this._wrk.updateBuild(this._wrkCalc.getBuild(selectedValue), this.deleteSuccess.bind(this), this.deleteError);
+            this._wrk.updateBuild(this._wrkCalc.getBuild(), this.deleteSuccess.bind(this), this.deleteError);
         }
     }
 
@@ -433,6 +433,8 @@ export class BuildCreatorCtrl {
         var listBuilds = document.getElementById("selectBuilds");
         var selectedBuild = listBuilds.value;
         this._wrkCalc.buildChange(selectedBuild);
+        document.getElementById("buttonSaveBuild").disabled = false;
+        document.getElementById("buttonDeleteBuild").disabled = false;
         document.getElementById("selectAmulets").value = this._wrkCalc.getAmuletName();
         document.getElementById("selectRings1").value = this._wrkCalc.getRing1Name();
         document.getElementById("selectRings2").value = this._wrkCalc.getRing2Name();

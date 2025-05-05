@@ -52,18 +52,31 @@ class DBConnectionWrk
     }
 
     // Method to execute a general query
-    public function executeQuery($query, $params = []): bool
+    public function executeQuery($query, $params = [], $useTransaction = false): bool
     {
         try {
+            $this->pdo->beginTransaction();
+
             $statement = $this->pdo->prepare($query);
             $this->bindParameters($statement, $params);
             $success = $statement->execute();
-            return $success;
+
+            if ($success) {
+                $this->pdo->commit();
+
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (PDOException $e) {
-            echo "Query execution failed: " . $e->getMessage();
+            if ($useTransaction && $this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
             return false;
         }
     }
+
 
     // Method to bind parameters to a prepared statement
     private function bindParameters($statement, $params)

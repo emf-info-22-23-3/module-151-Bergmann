@@ -128,8 +128,7 @@ export class WrkCalculations {
 
     }
 
-    getBuild(buildname) {
-
+    getBuild() {
         return this._currentBuild;
     }
 
