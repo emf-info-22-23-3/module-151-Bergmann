@@ -12,6 +12,7 @@ export class WrkCalculations {
         if (WrkCalculations.instance) {
             return WrkCalculations.instance;
         }
+        this._currentBuild = null;
         this._helmet = null;
         this._chestplate = null;
         this._greaves = null;
@@ -122,124 +123,112 @@ export class WrkCalculations {
 
 
     buildChange(buildname) {
-        var selectedbuild = this._builds.find(build => build.name === buildname);
-        this.amuletChange(selectedbuild._amulet);
-        this.helmetChange(selectedbuild._helmet);
-        this.chestplateChange(selectedbuild._chestplate);
-        this.greavesChange(selectedbuild._greaves);
-        this.gauntletsChange(selectedbuild._gauntlets);
-        this.ring1Change(selectedbuild._ring1);
-        this.ring2Change(selectedbuild._ring2);
-        this.ring3Change(selectedbuild._ring3);
-        this.ring4Change(selectedbuild._ring4);
-        this.primaryArchetypeChange(selectedbuild._primaryArchetype);
-        this.secondaryArchetypeChange(selectedbuild._secondaryArchetype);
+        this._currentBuild = this._builds.find(build => build.name === buildname);
+
+
     }
 
     getBuild(buildname) {
-        var returnValue = null;
-        this._builds.forEach(build => {
-            if (build.name == buildname) {
-                returnValue = build;
-            }
-        });
-        return returnValue;
+
+        return this._currentBuild;
     }
 
     amuletChange(newAmulet) {
-        var returnValue = null;
         this._amuletsList.forEach(amulet => {
             if (amulet._name == newAmulet) {
-                returnValue = newAmulet;
+                this._currentBuild.amulet = amulet;
+
             }
         });
-        return returnValue;
     }
 
     ring1Change(ring1) {
-        var returnValue = null;
         this._ringsList.forEach(ring => {
             if (ring._name == ring1) {
-                returnValue = ring1;
+                this._currentBuild.ring1 = ring;
+
             }
         });
-        return returnValue;
     }
 
     ring2Change(ring2) {
-        var returnValue = null;
         this._ringsList.forEach(ring => {
             if (ring._name == ring2) {
-                returnValue = ring2;
+                this._currentBuild.ring2 = ring;
+
             }
         });
-        return returnValue;
     }
 
     ring3Change(ring3) {
-        var returnValue = null;
         this._ringsList.forEach(ring => {
             if (ring._name == ring3) {
-                returnValue = ring3;
+                this._currentBuild.ring3 = ring;
+
             }
         });
-        return returnValue;
     }
 
     ring4Change(ring4) {
-        var returnValue = null;
         this._ringsList.forEach(ring => {
             if (ring._name == ring4) {
-                returnValue = ring4;
+                this._currentBuild.ring4 = ring;
+
             }
         });
-        return returnValue;
     }
 
     helmetChange(newhelmet) {
-        var returnValue = null;
-        this._helmetList.forEach(helmet => {
+        this._helmetsList.forEach(helmet => {
+            console.log(helmet._name);
             if (helmet._name == newhelmet) {
-                returnValue = newhelmet;
+                this._currentBuild.helmet = helmet;
+                console.log(this._currentBuild.helmet);
             }
         });
-        return returnValue;
     }
 
-    chestplateChange(newchestplate) {
-        var returnValue = null;
+    chestplateChange(newChestplate) {
         this._chestplatesList.forEach(chestplate => {
-            if (chestplate._name == newchestplate) {
-                returnValue = newchestplate;
+            if (chestplate._name == newChestplate) {
+                this._currentBuild.chestplate = chestplate;
+
             }
         });
-        return returnValue;
     }
 
-    greavesChange(greaves) {
-        if (greaves instanceof Greaves) {
-            this._greaves = greaves;
-            this.updateStats();
-        }
+    greavesChange(newGreaves) {
+        this._greavesList.forEach(greaves => {
+            if (greaves._name == newGreaves) {
+                this._currentBuild.greaves = greaves;
+
+            }
+        });
     }
 
-    gauntletsChange(gauntlets) {
-        if (gauntlets instanceof Gauntlets) {
-            this._gauntlets = gauntlets;
-            this.updateStats();
-        }
+    gauntletsChange(newGauntlets) {
+        this._gauntletsList.forEach(gauntlets => {
+            if (gauntlets._name == newGauntlets) {
+                this._currentBuild.gauntlets = gauntlets;
+
+            }
+        });
     }
 
-    primaryArchetypeChange(archetype) {
-        if (archetype instanceof Archetype) {
-            this._primaryArchetype = archetype;
-        }
+    primaryArchetypeChange(newArchetype) {
+        this._archetypesList.forEach(archetype => {
+            if (archetype._name == newArchetype) {
+                this._currentBuild.primaryArchetype = archetype;
+            }
+        });
     }
 
-    secondaryArchetypeChange(archetype) {
-        if (archetype instanceof Archetype) {
-            this._secondaryArchetype = archetype;
-        }
+    secondaryArchetypeChange(newArchetype) {
+        this._archetypesList.forEach(archetype => {
+            if (archetype._name == newArchetype) {
+                this._currentBuild.secondaryArchetype = archetype;
+            }
+        });
     }
 
     updateStats() {
@@ -419,88 +408,88 @@ export class WrkCalculations {
 
     getAmuletName() {
         var resultat = "Amulet"
-        if (this._amulet != null) {
-            resultat = this._amulet._name;
+        if (this._currentBuild.amulet != null) {
+            resultat = this._currentBuild.amulet;
         }
         return resultat;
     }
 
     getRing1Name() {
         var resultat = "Ring"
-        if (this._rings.get("Ring1") != null) {
-            resultat = this._rings.get("Ring1")._name;
+        if (this._currentBuild.ring1 != null) {
+            resultat = this._currentBuild.ring1;
         }
         return resultat;
     }
 
     getRing2Name() {
         var resultat = "Ring"
-        if (this._rings.get("Ring2") != null) {
-            resultat = this._rings.get("Ring2")._name;
+        if (this._currentBuild.ring2 != null) {
+            resultat = this._currentBuild.ring2;
         }
         return resultat;
     }
 
     getRing3Name() {
         var resultat = "Ring"
-        if (this._rings.get("Ring3") != null) {
-            resultat = this._rings.get("Ring3")._name;
+        if (this._currentBuild.ring3 != null) {
+            resultat = this._currentBuild.ring3;
         }
         return resultat;
     }
 
     getRing4Name() {
         var resultat = "Ring"
-        if (this._rings.get("Ring4") != null) {
-            resultat = this._rings.get("Ring4")._name;
+        if (this._currentBuild.ring4 != null) {
+            resultat = this._currentBuild.ring4;
         }
         return resultat;
     }
 
     getHelmetName() {
         var resultat = "Helmet"
-        if (this._helmet != null) {
-            resultat = this._helmet._name;
+        if (this._currentBuild.helmet != null) {
+            resultat = this._currentBuild.helmet;
         }
         return resultat;
     }
 
     getChestplateName() {
         var resultat = "Chestplate"
-        if (this._chestplate != null) {
-            resultat = this._chestplate._name;
+        if (this._currentBuild.chestplate != null) {
+            resultat = this._currentBuild.chestplate;
         }
         return resultat;
     }
 
     getGreavesName() {
         var resultat = "Greaves"
-        if (this._greaves != null) {
-            resultat = this._greaves._name;
+        if (this._currentBuild.greaves != null) {
+            resultat = this._currentBuild.greaves;
         }
         return resultat;
     }
 
     getGauntletsName() {
         var resultat = "Gauntlets"
-        if (this._gauntlets != null) {
-            resultat = this._gauntlets._name;
+        if (this._currentBuild.gauntlets != null) {
+            resultat = this._currentBuild.gauntlets;
         }
         return resultat;
     }
 
     getPrimaryArchetypeName() {
         var resultat = "Archetype"
-        if (this._primaryArchetype != null) {
-            resultat = this._primaryArchetype_name;
+        if (this._currentBuild.primaryArchetype != null) {
+            resultat = this._currentBuild.primaryArchetype;
         }
         return resultat;
     }
 
     getSecondaryArchetypeName() {
         var resultat = "Archetype"
-        if (this._secondaryArchetype != null) {
-            resultat = this._secondaryArchetype._name;
+        if (this._currentBuild.secondaryArchetype != null) {
+            resultat = this._currentBuild.secondaryArchetype;
         }
         return resultat;
     }

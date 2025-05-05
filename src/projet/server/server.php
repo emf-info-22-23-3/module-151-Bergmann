@@ -44,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $success = $dataCtrl->getGauntlets();
         echo $success;
     }
+    if ($_GET['action'] == "getArchetypes") {
+        $success = $dataCtrl->getArchetypes();
+        echo $success;
+    }
     if ($_GET['action'] == "getBuilds") {
         $success = $dataCtrl->getBuilds();
         echo $success;

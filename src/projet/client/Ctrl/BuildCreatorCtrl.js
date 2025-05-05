@@ -18,6 +18,16 @@ export class BuildCreatorCtrl {
         document.getElementById("buttonDeleteBuild").addEventListener("click", this.deleteBuildButton.bind(this));
         document.getElementById("buttonSaveBuild").addEventListener("click", this.saveBuildButton.bind(this));
         document.getElementById("selectAmulets").addEventListener("change", this.amuletEvent.bind(this));
+        document.getElementById("selectHelmets").addEventListener("change", this.helmetEvent.bind(this));
+        document.getElementById("selectChestplates").addEventListener("change", this.chestplateEvent.bind(this));
+        document.getElementById("selectGreaves").addEventListener("change", this.greavesEvent.bind(this));
+        document.getElementById("selectGauntlets").addEventListener("change", this.gauntletsEvent.bind(this));
+        document.getElementById("selectRings1").addEventListener("change", this.ring1Event.bind(this));
+        document.getElementById("selectRings2").addEventListener("change", this.ring2Event.bind(this));
+        document.getElementById("selectRings3").addEventListener("change", this.ring3Event.bind(this));
+        document.getElementById("selectRings4").addEventListener("change", this.ring4Event.bind(this));
+        document.getElementById("selectPrimaryArchetype").addEventListener("change", this.primaryArchetypeEvent.bind(this));
+        document.getElementById("selectSecondaryArchetype").addEventListener("change", this.secondaryArchetypeEvent.bind(this));
         document.getElementById("selectBuilds").addEventListener("change", this.buildEvent.bind(this));
 
 
@@ -30,11 +40,12 @@ export class BuildCreatorCtrl {
         this.getChestplates();
         this.getGreaves();
         this.getGauntlets();
+        this.getArchetypes();
         this.getBuilds();
     }
 
     getAmulets() {
-        this._wrk.getAmulets(this.amuletsSuccess, this.amuletsError);
+        this._wrk.getAmulets(this.amuletsSuccess.bind(this), this.amuletsError);
     }
 
     amuletsSuccess(data, text, jqXHR) {
@@ -54,6 +65,7 @@ export class BuildCreatorCtrl {
             option.text = amulet.toString();
             option.value = amulet;
             amulets.appendChild(option);
+            this._wrkCalc.addAmulet(amulet);
         });
     }
 
@@ -62,7 +74,7 @@ export class BuildCreatorCtrl {
     }
 
     getRings() {
-        this._wrk.getRings(this.ringsSuccess, this.ringsError);
+        this._wrk.getRings(this.ringsSuccess.bind(this), this.ringsError);
     }
 
     ringsSuccess(data, text, jqXHR) {
@@ -82,6 +94,9 @@ export class BuildCreatorCtrl {
                 $(ringElement).find("secondarymodifier").text(),
                 $(ringElement).find("ispercentagesecondary").text(),
             );
+
+            this._wrkCalc.addRing(ring);
+
             var option1 = document.createElement("option");
             option1.text = ring.toString();
             option1.value = ring;
@@ -111,7 +126,7 @@ export class BuildCreatorCtrl {
 
 
     getHelmets() {
-        this._wrk.getHelmets(this.helmetSuccess, this.helmetError);
+        this._wrk.getHelmets(this.helmetSuccess.bind(this), this.helmetError);
     }
 
     helmetSuccess(data, text, jqXHR) {
@@ -122,6 +137,7 @@ export class BuildCreatorCtrl {
                 $(helmetElement).find("armor").text(),
                 $(helmetElement).find("weight").text(),
             );
+            this._wrkCalc.addHelmet(helmet);
             var option = document.createElement("option");
             option.text = helmet.toString();
             option.value = helmet;
@@ -134,7 +150,7 @@ export class BuildCreatorCtrl {
     }
 
     getChestplates() {
-        this._wrk.getChestplates(this.chestplateSuccess, this.chestplateError);
+        this._wrk.getChestplates(this.chestplateSuccess.bind(this), this.chestplateError);
     }
 
     chestplateSuccess(data, text, jqXHR) {
@@ -145,6 +161,7 @@ export class BuildCreatorCtrl {
                 $(chestplateElement).find("armor").text(),
                 $(chestplateElement).find("weight").text(),
             );
+            this._wrkCalc.addChestplate(chestplate);
             var option = document.createElement("option");
             option.text = chestplate.toString();
             option.value = chestplate;
@@ -157,7 +174,7 @@ export class BuildCreatorCtrl {
     }
 
     getGreaves() {
-        this._wrk.getGreaves(this.greavesSuccess, this.greavesError);
+        this._wrk.getGreaves(this.greavesSuccess.bind(this), this.greavesError);
     }
 
     greavesSuccess(data, text, jqXHR) {
@@ -168,6 +185,7 @@ export class BuildCreatorCtrl {
                 $(greavesElement).find("armor").text(),
                 $(greavesElement).find("weight").text(),
             );
+            this._wrkCalc.addGreaves(greaves);
             var option = document.createElement("option");
             option.text = greaves.toString();
             option.value = greaves;
@@ -180,7 +198,7 @@ export class BuildCreatorCtrl {
     }
 
     getGauntlets() {
-        this._wrk.getGauntlets(this.gauntletsSuccess, this.gauntletsError);
+        this._wrk.getGauntlets(this.gauntletsSuccess.bind(this), this.gauntletsError);
     }
 
     gauntletsSuccess(data, text, jqXHR) {
@@ -191,6 +209,7 @@ export class BuildCreatorCtrl {
                 $(gauntletsElement).find("armor").text(),
                 $(gauntletsElement).find("weight").text(),
             );
+            this._wrkCalc.addGauntlets(gauntlets);
             var option = document.createElement("option");
             option.text = gauntlets.toString();
             option.value = gauntlets;
@@ -203,16 +222,17 @@ export class BuildCreatorCtrl {
     }
 
     getArchetypes() {
-        this._wrk.getArchetypes(this.archetypesSuccess, this.archetypesError);
+        this._wrk.getArchetypes(this.archetypesSuccess.bind(this), this.archetypesError);
     }
 
-    archetypesSuccess() {
+    archetypesSuccess(data, text, jqXHR) {
         var archetypeList1 = document.getElementById("selectPrimaryArchetype");
         var archetypeList2 = document.getElementById("selectSecondaryArchetype");
         $(data).find("Archetype").each((index, archetypeElement) => {
             var archetype = new Archetype(
-                $(gauntletsElement).find("name").text(),
+                $(archetypeElement).find("name").text(),
             );
+            this._wrkCalc.addArchetype(archetype);
             var option1 = document.createElement("option");
             option1.text = archetype.toString();
             option1.value = archetype;
@@ -225,7 +245,7 @@ export class BuildCreatorCtrl {
         });
     }
 
-    archetypesError() {
+    archetypesError(data, text, jqXHR) {
         console.log("error Archetypes");
     }
 
@@ -320,6 +340,86 @@ export class BuildCreatorCtrl {
         var selectElement = document.getElementById("selectAmulets");
         var selectedValue = selectElement.value;
         this._wrkCalc.amuletChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    helmetEvent(evt) {
+        var selectElement = document.getElementById("selectHelmets");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.helmetChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    chestplateEvent(evt) {
+        var selectElement = document.getElementById("selectChestplates");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.chestplateChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    greavesEvent(evt) {
+        var selectElement = document.getElementById("selectGreaves");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.greavesChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    gauntletsEvent(evt) {
+        var selectElement = document.getElementById("selectGauntlets");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.gauntletsChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    ring1Event(evt) {
+        var selectElement = document.getElementById("selectRings1");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.ring1Change(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    ring2Event(evt) {
+        var selectElement = document.getElementById("selectRings2");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.ring2Change(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    ring3Event(evt) {
+        var selectElement = document.getElementById("selectRings3");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.ring3Change(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    ring4Event(evt) {
+        var selectElement = document.getElementById("selectRings4");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.ring4Change(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    primaryArchetypeEvent(evt) {
+        var selectElement = document.getElementById("selectPrimaryArchetype");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.primaryArchetypeChange(selectedValue);
+        var stats = this._wrkCalc.getStats();
+        //this.displayStats(stats);
+    }
+
+    secondaryArchetypeEvent(evt) {
+        var selectElement = document.getElementById("selectSecondaryArchetype");
+        var selectedValue = selectElement.value;
+        this._wrkCalc.secondaryArchetypeChange(selectedValue);
         var stats = this._wrkCalc.getStats();
         //this.displayStats(stats);
     }

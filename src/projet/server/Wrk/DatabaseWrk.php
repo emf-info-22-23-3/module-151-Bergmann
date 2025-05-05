@@ -170,6 +170,7 @@ class DatabaseWrk
                 $build->setRing3($temp[2]);
                 $build->setRing4($temp[3]);
             }
+            $counterBuilds++;
 
             $this->builds[$counterBuilds] = $build;
         }
@@ -213,58 +214,83 @@ class DatabaseWrk
     public function saveBuild($build, $user)
     {
         $return = false;
+
         if ($build instanceof Build) {
-            $query = "SELECT PK_User FROM t_user WHERE Name = :name";
-            $params = [':name' => ["$user", PDO::PARAM_STR]];
+            // Combine user and build retrieval using JOIN
+            $query = "
+                SELECT b.PK_Build, u.PK_User 
+                FROM t_user u
+                INNER JOIN t_build b ON b.FK_User = u.PK_User
+                WHERE u.Name = :name AND b.Name = :buildname
+            ";
+            $params = [
+                ':name' => [$user, PDO::PARAM_STR],
+                ':buildname' => [$build->getName(), PDO::PARAM_STR]
+            ];
             $result = $this->dbConnection->selectQuery($query, $params);
-            $pkuser = null;
-            foreach ($result as $data) {
-                $pkuser = $data["PK_User"];
-            }
 
-            $name = $build->getName();
-            $pkbuild = null;
+            if (!empty($result)) {
+                $pkuser = $result[0]['PK_User'];
+                $pkbuild = $result[0]['PK_Build'];
 
-            $query2 = "SELECT * from t_build WHERE FK_User=:fk AND Name=:Name";
-            $params2 = [
-                ':Name' => [$name, PDO::PARAM_STR],
-                ':fk' => [$pkuser, PDO::PARAM_STR],
-            ];
-            $result2 = $this->dbConnection->selectQuery($query2, $params2);
-            foreach ($result2 as $data) {
-                $pkbuild = $data['PK_Build'];
-            }
-
-            $query3 = "UPDATE t_build SET FK_Amulet =:fkamulet, FK_Helmet =:fkhelmet, FK_Chestplate =:fkchestplate, FK_Greaves =:fkgreaves, FK_Gauntlets =:fkgauntlets, FK_Archetype_Primary=:fkarchetypeprimary, FK_Archetype_Secondary=:fkarchetypesecondary";
-            $params3 = [
-                ':fkamulet' => [$this->getPKAmuletByName($build->getAmulet()), PDO::PARAM_STR],
-                ':fkhelmet' => [$this->getPKHelmetByName($build->getHelmet()), PDO::PARAM_STR],
-                ':fkchestplate' => [$this->getPKChestplateByName($build->getChestplate()), PDO::PARAM_STR],
-                ':fkgreaves' => [$this->getPKGreavesByName($build->getGreaves()), PDO::PARAM_STR],
-                ':fkgauntlets' => [$this->getPKGauntletsByName($build->getGauntlets()), PDO::PARAM_STR],
-                ':fkarchetypeprimary' => [$this->getPKArchetypeByName($build->getPrimaryArchetype()), PDO::PARAM_STR],
-                ':fkarchetypesecondary' => [$this->getPKArchetypeByName($build->getSecondaryArchetype()), PDO::PARAM_STR],
-            ];
-            $result3 = $this->dbConnection->executeQuery($query3, $params3);
-
-            $query4 = "DELETE FROM tr_build_ring where FK_Build=:fkbuild";
-            $params4 = [':fkbuild' => ["$pkbuild", PDO::PARAM_STR]];
-            $result4 = $this->dbConnection->executeQuery($query4, $params4);
-            $listRings = $build->getAllRings();
-            foreach ($listRings as $ring) {
-                $query5 = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
-                $params5 = [
-                    ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
-                    ':fkring' => [$this->getPKRingByName($ring), PDO::PARAM_STR],
+                // Update build gear and archetypes
+                $queryUpdate = "
+                    UPDATE t_build SET
+                        FK_Amulet = :fkamulet,
+                        FK_Helmet = :fkhelmet,
+                        FK_Chestplate = :fkchestplate,
+                        FK_Greaves = :fkgreaves,
+                        FK_Gauntlets = :fkgauntlets,
+                        FK_Archetype_Primary = :fkarchetypeprimary,
+                        FK_Archetype_Secondary = :fkarchetypesecondary
+                    WHERE PK_Build = :pkbuild
+                ";
+                $paramsUpdate = [
+                    ':fkamulet' => [$this->getPKAmuletByName($build->getAmulet()), PDO::PARAM_STR],
+                    ':fkhelmet' => [$this->getPKHelmetByName($build->getHelmet()), PDO::PARAM_STR],
+                    ':fkchestplate' => [$this->getPKChestplateByName($build->getChestplate()), PDO::PARAM_STR],
+                    ':fkgreaves' => [$this->getPKGreavesByName($build->getGreaves()), PDO::PARAM_STR],
+                    ':fkgauntlets' => [$this->getPKGauntletsByName($build->getGauntlets()), PDO::PARAM_STR],
+                    ':fkarchetypeprimary' => [$this->getPKArchetypeByName($build->getPrimaryArchetype()), PDO::PARAM_STR],
+                    ':fkarchetypesecondary' => [$this->getPKArchetypeByName($build->getSecondaryArchetype()), PDO::PARAM_STR],
+                    ':pkbuild' => [$pkbuild, PDO::PARAM_STR]
                 ];
-                $result5 = $this->dbConnection->executeQuery($query5, $params5);
-                if ($result5 == true) {
-                    $return = true;
+                $this->dbConnection->executeQuery($queryUpdate, $paramsUpdate);
+
+                // Clear previous ring associations
+                $queryDelete = "DELETE FROM tr_build_ring WHERE FK_Build = :fkbuild";
+                $paramsDelete = [':fkbuild' => [$pkbuild, PDO::PARAM_STR]];
+                $this->dbConnection->executeQuery($queryDelete, $paramsDelete);
+
+                // Insert new ring associations with validation
+                $listRings = $build->getAllRings();
+                $ringCount = count($listRings);
+
+                // Validate that ring count is within 0–4
+                if ($ringCount >= 0 && $ringCount <= 4) {
+                    foreach ($listRings as $ring) {
+                        $queryInsert = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
+                        $paramsInsert = [
+                            ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
+                            ':fkring' => [$this->getPKRingByName($ring), PDO::PARAM_STR]
+                        ];
+                        $resultInsert = $this->dbConnection->executeQuery($queryInsert, $paramsInsert);
+                        if ($resultInsert === true) {
+                            $return = true;
+                        }
+                    }
+                } else {
+                    // Optionally log this or throw an exception
+                    // e.g., throw new InvalidArgumentException("Invalid number of rings: $ringCount");
+                    return false;
                 }
+
             }
         }
+
         return $return;
     }
+
 
     public function deleteBuild($buildname, $user)
     {

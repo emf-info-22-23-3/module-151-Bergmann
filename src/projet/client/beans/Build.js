@@ -4,6 +4,7 @@ import { Helmet } from "../beans/Helmet.js";
 import { Chestplate } from "../beans/Chestplate.js";
 import { Greaves } from "../beans/Greaves.js";
 import { Gauntlets } from "../beans/Gauntlets.js"
+import { Archetype } from "../beans/Archetype.js"
 
 export class Build {
     constructor(name, amulet, helmet, chestplate, greaves, gauntlets, primaryArchetype, secondaryArchetype, ring1, ring2, ring3, ring4) {
@@ -61,4 +62,62 @@ export class Build {
     toString() {
         return this._name;
     }
+
+    set amulet(amulet) {
+        if (amulet instanceof Amulet) {
+            this._amulet = amulet;
+        }
+    }
+    set helmet(helmet) {
+        if (helmet instanceof Helmet) {
+            this._helmet = helmet;
+        }
+    }
+    set chestplate(chestplate) {
+        if (chestplate instanceof Chestplate) {
+            this._chestplate = chestplate;
+        }
+    }
+    set greaves(greaves) {
+        if (greaves instanceof Greaves) {
+            this._greaves = greaves;
+        }
+    }
+    set gauntlets(gauntlets) {
+        if (gauntlets instanceof Gauntlets) {
+            this._gauntlets = gauntlets;
+        }
+    }
+    set primaryArchetype(primaryArchetype) {
+        if (primaryArchetype instanceof Archetype) {
+            this._primaryArchetype = primaryArchetype;
+        }
+    }
+    set secondaryArchetype(secondaryArchetype) {
+        if (secondaryArchetype instanceof Archetype) {
+            this._secondaryArchetype = secondaryArchetype;
+        }
+    }
+    set ring1(ring1) {
+        if (ring1 instanceof Ring) {
+            this._ring1 = ring1;
+        }
+    }
+    set ring2(ring2) {
+        if (ring2 instanceof Ring) {
+            this._ring2 = ring2;
+        }
+    }
+    set ring3(ring3) {
+        if (ring3 instanceof Ring) {
+            this._ring3 = ring3;
+        }
+    }
+    set ring4(ring4) {
+        if (ring4 instanceof Ring) {
+            this._ring4 = ring4;
+        }
+    }
+
+
 }

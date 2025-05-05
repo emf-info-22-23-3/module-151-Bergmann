@@ -104,6 +104,17 @@ class DataCtrl
         return $result;
     }
 
+    public function getArchetypes(): string
+    {
+        $result = "<listArchetypes>";
+        $this->gauntlets = $this->databaseWrk->getArchetypes();
+        foreach ($this->gauntlets as $gauntlets) {
+            $result = $result . $gauntlets->asXML();
+        }
+        $result = $result . "</listArchetypes>";
+        return $result;
+    }
+
     public function getBuilds()
     {
         $result = null;
@@ -192,6 +203,8 @@ class DataCtrl
             $build->setRing2($ring2);
             $build->setRing3($ring3);
             $build->setRing4($ring4);
+            $build->setPrimaryArchetype($primaryArchetype);
+            $build->setSecondaryArchetype($secondaryArchetype);
             $result = $this->databaseWrk->saveBuild($build, $user->getName());
         }
         return $result;
