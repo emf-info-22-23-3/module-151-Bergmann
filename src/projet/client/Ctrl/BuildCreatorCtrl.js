@@ -255,6 +255,10 @@ export class BuildCreatorCtrl {
 
     getBuildsSuccess(data, text, jqXHR) {
         var buildList = document.getElementById("selectBuilds");
+        buildList.innerHTML = "";
+        var optionDefault = document.createElement("option");
+        optionDefault.text = "Select Build";
+        buildList.appendChild(optionDefault);
         $(data).find("Build").each((index, buildElement) => {
             var name = $(buildElement).find("nameBuild").text();
             var amulet = this.findAmulet($(buildElement).find("Amulet"));
