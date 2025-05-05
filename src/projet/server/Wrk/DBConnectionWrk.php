@@ -52,7 +52,7 @@ class DBConnectionWrk
     }
 
     // Method to execute a general query
-    public function executeQuery($query, $params = [], $useTransaction = false): bool
+    public function executeQuery($query, $params = []): bool
     {
         try {
             $this->pdo->beginTransaction();
@@ -70,9 +70,8 @@ class DBConnectionWrk
             }
 
         } catch (PDOException $e) {
-            if ($useTransaction && $this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
+            $this->pdo->rollBack();
+
             return false;
         }
     }
