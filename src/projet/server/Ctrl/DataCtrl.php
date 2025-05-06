@@ -8,6 +8,16 @@ include_once(realpath(__DIR__ . '/../beans/Chestplate.php'));
 include_once(realpath(__DIR__ . '/../beans/Greaves.php'));
 include_once(realpath(__DIR__ . '/../beans/Gauntlets.php'));
 
+/**
+ * Class DataCtrl
+ *
+ * manages the Data
+ *
+ * @version 2.0
+ * @author Bergmann Leon
+ * @project Remnant 2 Build Planner
+ */
+
 class DataCtrl
 {
     private $databaseWrk;
@@ -34,6 +44,11 @@ class DataCtrl
         $this->builds = array();
     }
 
+    /**
+     * Getter for the list of Amulets
+     *
+     * @return string amulets as XML or error code
+     */
     public function getAmulets(): string
     {
         if (SessionCtrl::getInstance()->isConnected()) {
@@ -50,6 +65,11 @@ class DataCtrl
 
     }
 
+    /**
+     * Getter for the list of Rings
+     *
+     * @return string rings as XML or error code
+     */
     public function getRings(): string
     {
         $result = "<listRings>";
@@ -61,6 +81,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * Getter for the list of Helmets
+     *
+     * @return string Helmets as XML or error code
+     */
     public function getHelmets(): string
     {
         $result = "<listHelmets>";
@@ -71,6 +96,12 @@ class DataCtrl
         $result = $result . "</listHelmets>";
         return $result;
     }
+
+    /**
+     * Getter for the list of Chestplates
+     *
+     * @return string Chestplates as XML or error code
+     */
     public function getChestplates(): string
     {
         $result = "<listChestplates>";
@@ -82,6 +113,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * Getter for the list of Greaves
+     *
+     * @return string Greaves as XML or error code
+     */
     public function getGreaves(): string
     {
         $result = "<listGreaves>";
@@ -93,6 +129,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * Getter for the list of Gauntlets
+     *
+     * @return string Gauntlets as XML or error code
+     */
     public function getGauntlets(): string
     {
         $result = "<listGauntlets>";
@@ -104,6 +145,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * Getter for the list of Archetypes
+     *
+     * @return string Archetypes as XML or error code
+     */
     public function getArchetypes(): string
     {
         $result = "<listArchetypes>";
@@ -115,6 +161,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * Getter for the list of Builds
+     *
+     * @return string Builds as XML or error code
+     */
     public function getBuilds()
     {
         $result = null;
@@ -131,6 +182,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * method to create a new build
+     * @param string $build
+     * @return bool success
+     */
     public function createBuild($build)
     {
         $result = null;
@@ -143,6 +199,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * method to save a build
+     * @param array $buildAsArray
+     * @return string success
+     */
     public function updateBuild($buildAsArray)
     {
         $result = null;
@@ -210,6 +271,11 @@ class DataCtrl
         return $result;
     }
 
+    /**
+     * method to delete a build
+     * @param string $buildname
+     * @return bool success
+     */
     public function deleteBuild($buildname)
     {
         $result = null;

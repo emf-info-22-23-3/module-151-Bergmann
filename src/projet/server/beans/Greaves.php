@@ -1,9 +1,26 @@
 <?php
+/**
+ * Class Greaves
+ *
+ * Beans for greaves 
+ *
+ * @version 2.0
+ * @author Bergmann Leon
+ * @project Remnant 2 Build Planner
+ */
 class Greaves
 {
     private $name;
     private $armor;
     private $weight;
+
+    /**
+     * Constructor of the class Greaves
+     *
+     * @param string $name. Name of the Greaves
+     * @param int $armor the provided Armor value
+     * @param double $weight the weight
+     */
     public function __construct($name, $armor, $weight)
     {
         $this->name = $name;
@@ -11,28 +28,43 @@ class Greaves
         $this->weight = $weight;
     }
 
-    public function setSecondaryStats($secondaryModifier, $secondaryValue, $isPercentageSecondary)
-    {
-        $this->secondaryModifier = $secondaryModifier;
-        $this->secondaryValue = $secondaryValue;
-        $this->isPercentage = $isPercentageSecondary;
-    }
-
+    
+    /**
+     * Getter for the name of the Greaves
+     *
+     * @return string name of the Greaves
+     */
     public function getName()
     {
         return $this->name;
     }
+
+    /**
+     * Getter for the Armor of the Greaves
+     *
+     * @return string Armor of the Greaves
+     */
     public function getArmor()
     {
         return $this->armor;
     }
 
+    /**
+     * Getter for the Weight of the Greaves
+     *
+     * @return string Weight of the Greaves
+     */
     public function getWeight()
     {
         return $this->weight;
     }
 
 
+    /**
+     * method that returns the Greaves in an XML format
+     *
+     * @return string Greaves as XML
+     */
     public function asXML()
     {
         $result = "<Greaves>";

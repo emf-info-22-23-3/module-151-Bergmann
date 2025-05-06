@@ -8,7 +8,15 @@ include_once(realpath(__DIR__ . '/../beans/Greaves.php'));
 include_once(realpath(__DIR__ . '/../beans/Gauntlets.php'));
 include_once(realpath(__DIR__ . '/../beans/Archetype.php'));
 include_once(realpath(__DIR__ . '/../beans/Build.php'));
-
+/**
+ * Class DatabaseWrk
+ *
+ * Manages database requests 
+ *
+ * @version 2.0
+ * @author Bergmann Leon
+ * @project Remnant 2 Build Planner
+ */
 
 class DatabaseWrk
 {
@@ -22,6 +30,10 @@ class DatabaseWrk
     private $builds;
     private $archetypes;
 
+    /**
+     * Constructor of the class Amulet
+     *
+     */
     public function __construct()
     {
         $this->dbConnection = DBConnectionWrk::getInstance();
@@ -36,6 +48,11 @@ class DatabaseWrk
 
     }
 
+    /**
+     * Getter for the list of Amulets
+     *
+     * @return array list of amulets
+     */
     public function getAmulets(): array
     {
         $query = "SELECT * FROM t_amulet";
@@ -50,6 +67,11 @@ class DatabaseWrk
         return $this->amulets;
     }
 
+    /**
+     * Getter for the list of Rings
+     *
+     * @return array list of rings
+     */
     public function getRings(): array
     {
         $query = "SELECT * FROM t_ring";
@@ -64,6 +86,11 @@ class DatabaseWrk
         return $this->rings;
     }
 
+    /**
+     * Getter for the list of Helmets
+     *
+     * @return array list of Helmets
+     */
     public function getHelmets(): array
     {
         $query = "SELECT * FROM t_helmet";
@@ -77,6 +104,11 @@ class DatabaseWrk
         return $this->helmets;
     }
 
+    /**
+     * Getter for the list of chestplates
+     *
+     * @return array list of chestplates
+     */
     public function getChestplates(): array
     {
         $query = "SELECT * FROM t_chestplate";
@@ -90,6 +122,11 @@ class DatabaseWrk
         return $this->chestplates;
     }
 
+    /**
+     * Getter for the list of greaves
+     *
+     * @return array list of greaves
+     */
     public function getGreaves(): array
     {
         $query = "SELECT * FROM t_greaves";
@@ -103,6 +140,11 @@ class DatabaseWrk
         return $this->greaves;
     }
 
+    /**
+     * Getter for the list of gauntlets
+     *
+     * @return array list of gauntlets
+     */
     public function getGauntlets(): array
     {
         $query = "SELECT * FROM t_gauntlets";
@@ -116,6 +158,11 @@ class DatabaseWrk
         return $this->gauntlets;
     }
 
+    /**
+     * Getter for the list of archetypes
+     *
+     * @return array list of archetypes
+     */
     public function getArchetypes(): array
     {
         $query = "SELECT * FROM t_archetype";
@@ -129,6 +176,11 @@ class DatabaseWrk
         return $this->archetypes;
     }
 
+    /**
+     * Getter for the list of Builds
+     *
+     * @return array list of Builds
+     */
     public function getBuilds($user): array
     {
         $query = "SELECT PK_User FROM t_user WHERE Name = :name";
@@ -177,6 +229,11 @@ class DatabaseWrk
         return $this->builds;
     }
 
+    /**
+     * method to create a new build
+     * @param Build $build
+     * @return bool success
+     */
     public function newBuild($build, $user)
     {
         $return = false;
@@ -213,6 +270,11 @@ class DatabaseWrk
 
     }
 
+    /**
+     * method to save a build
+     * @param array $buildAsArray
+     * @return string success
+     */
     public function saveBuild($build, $user)
     {
         $return = false;
@@ -290,7 +352,11 @@ class DatabaseWrk
         return $return;
     }
 
-
+    /**
+     * method to delete a build
+     * @param string $buildname
+     * @return bool success
+     */
     public function deleteBuild($buildname, $user)
     {
         $return = false;
@@ -314,6 +380,11 @@ class DatabaseWrk
         return $return;
     }
 
+    /**
+     * method to get a ring by PK
+     * @param int $pk
+     * @return Ring $ring
+     */
     public function getRingByPK($pk): Ring
     {
         $ring = null;
@@ -329,6 +400,12 @@ class DatabaseWrk
         return $ring;
 
     }
+
+    /**
+     * method to get an Amulet by PK
+     * @param int $pk
+     * @return Amulet $amulet
+     */
     public function getAmuletByPK($pk): Amulet
     {
         $amulet = null;
@@ -344,6 +421,11 @@ class DatabaseWrk
         return $amulet;
     }
 
+    /**
+     * method to get a Helmet by PK
+     * @param int $pk
+     * @return Helmet $helmet
+     */
     public function getHelmetByPK($pk)
     {
         $helmet = null;
@@ -358,6 +440,11 @@ class DatabaseWrk
         return $helmet;
     }
 
+    /**
+     * method to get a Chestplate by PK
+     * @param int $pk
+     * @return Chestplate $chestplate
+     */
     public function getChestplateByPK($pk)
     {
         $chestplate = null;
@@ -372,6 +459,11 @@ class DatabaseWrk
         return $chestplate;
     }
 
+    /**
+     * method to get a Greaves by PK
+     * @param int $pk
+     * @return Greaves $greaves
+     */
     public function getGreavesByPK($pk)
     {
         $greaves = null;
@@ -386,6 +478,11 @@ class DatabaseWrk
         return $greaves;
     }
 
+    /**
+     * method to get a Gauntlets by PK
+     * @param int $pk
+     * @return Gauntlets $gauntlets
+     */
     public function getGauntletsByPK($pk)
     {
         $query = "SELECT * FROM t_gauntlets WHERE PK_Gauntlets = :pk";
@@ -398,6 +495,11 @@ class DatabaseWrk
         return $gauntlets;
     }
 
+    /**
+     * method to get an Archetype by PK
+     * @param int $pk
+     * @return Archetype $archetype
+     */
     public function getArchetypeByPK($pk)
     {
         $archetype = null;
@@ -412,6 +514,11 @@ class DatabaseWrk
         return $archetype;
     }
 
+    /**
+     * method to get the PK of a Ring by name
+     * @param Ring $ring
+     * @return string|null 
+     */
     public function getPKRingByName($ring)
     {
         $pk = null;
@@ -427,6 +534,11 @@ class DatabaseWrk
 
     }
 
+    /**
+     * method to get the PK of an Amulet by name
+     * @param Amulet $amulet
+     * @return string|null 
+     */
     public function getPKAmuletByName($amulet)
     {
         $pk = null;
@@ -441,6 +553,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a Helmet by name
+     * @param Helmet $helmet
+     * @return string|null 
+     */
     public function getPKHelmetByName($helmet)
     {
         $pk = null;
@@ -455,6 +572,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a Chestplate by name
+     * @param Chestplate $chestplate
+     * @return string|null 
+     */
     public function getPKChestplateByName($chestplate)
     {
         $pk = null;
@@ -469,6 +591,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a Greaves by name
+     * @param Greaves $greaves
+     * @return string|null 
+     */
     public function getPKGreavesByName($greaves)
     {
         $pk = null;
@@ -483,6 +610,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a Gauntlets by name
+     * @param Gauntlets $gauntlets
+     * @return string|null 
+     */
     public function getPKGauntletsByName($gauntlets)
     {
         $pk = null;
@@ -497,6 +629,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a Archetype by name
+     * @param Archetype $archetype
+     * @return string|null 
+     */
     public function getPKArchetypeByName($archetype)
     {
         $pk = null;
@@ -511,6 +648,11 @@ class DatabaseWrk
         return $pk;
     }
 
+    /**
+     * method to get the PK of a User by name
+     * @param User $user
+     * @return string|null 
+     */
     public function getPKUserByName($name)
     {
         $pkuser = null;
@@ -525,6 +667,12 @@ class DatabaseWrk
         return $pkuser;
     }
 
+    /**
+     * method to get the PK of a Helmet by name
+     * @param string $name 
+     * @param string $fkuser
+     * @return string|null 
+     */
     public function getPKBuild($name, $fkUser)
     {
         $pkbuild = null;
@@ -542,6 +690,11 @@ class DatabaseWrk
         return $pkbuild;
     }
 
+    /**
+     * method to remove special characters to prevent injections
+     * @param string $input 
+     * @return string 
+     */
     public function sanitizeInput(string $input): string
     {
         $stripped = strip_tags($input);
