@@ -81,28 +81,22 @@ class DBConnectionWrk
     public function executeQuery($query, $params = []): bool
     {
         try {
-            $this->pdo->beginTransaction();
+
 
             $statement = $this->pdo->prepare($query);
             $this->bindParameters($statement, $params);
             $success = $statement->execute();
-
             if ($success) {
-                $this->pdo->commit();
-
                 return true;
             } else {
                 return false;
             }
-
         } catch (PDOException $e) {
-            $this->pdo->rollBack();
-
             return false;
         }
     }
 
- /**
+    /**
      * method allowing to bind the params to a query
      *
      * @param string $query the query 
@@ -116,5 +110,21 @@ class DBConnectionWrk
         }
     }
 
+    public function rollback()
+    {
+        $this->pdo->rollBack();
+
+    }
+
+    public function commit()
+    {
+        $this->pdo->commit();
+
+    }
+
+    public function beginnTransaction()
+    {
+        $this->pdo->beginTransaction();
+    }
 
 }

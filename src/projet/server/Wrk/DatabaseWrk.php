@@ -281,23 +281,27 @@ class DatabaseWrk
 
         if ($build instanceof Build) {
             // Combine user and build retrieval using JOIN
-            $query = "
+            $this->dbConnection->beginnTransaction();
+            try {
+
+
+                $query = "
                 SELECT b.PK_Build, u.PK_User 
                 FROM t_user u
                 INNER JOIN t_build b ON b.FK_User = u.PK_User
                 WHERE u.Name = :name AND b.Name = :buildname
             ";
-            $params = [
-                ':name' => [$user, PDO::PARAM_STR],
-                ':buildname' => [$build->getName(), PDO::PARAM_STR]
-            ];
-            $result = $this->dbConnection->selectQuery($query, $params);
+                $params = [
+                    ':name' => [$user, PDO::PARAM_STR],
+                    ':buildname' => [$build->getName(), PDO::PARAM_STR]
+                ];
+                $result = $this->dbConnection->selectQuery($query, $params);
 
-            if (!empty($result)) {
-                $pkbuild = $result[0]['PK_Build'];
+                if (!empty($result)) {
+                    $pkbuild = $result[0]['PK_Build'];
 
-                // Update build gear and archetypes
-                $queryUpdate = "
+                    // Update build gear and archetypes
+                    $queryUpdate = "
                     UPDATE t_build SET
                         FK_Amulet = :fkamulet,
                         FK_Helmet = :fkhelmet,
@@ -308,44 +312,48 @@ class DatabaseWrk
                         FK_Archetype_Secondary = :fkarchetypesecondary
                     WHERE PK_Build = :pkbuild
                 ";
-                $paramsUpdate = [
-                    ':fkamulet' => [$this->getPKAmuletByName($build->getAmulet()), PDO::PARAM_STR],
-                    ':fkhelmet' => [$this->getPKHelmetByName($build->getHelmet()), PDO::PARAM_STR],
-                    ':fkchestplate' => [$this->getPKChestplateByName($build->getChestplate()), PDO::PARAM_STR],
-                    ':fkgreaves' => [$this->getPKGreavesByName($build->getGreaves()), PDO::PARAM_STR],
-                    ':fkgauntlets' => [$this->getPKGauntletsByName($build->getGauntlets()), PDO::PARAM_STR],
-                    ':fkarchetypeprimary' => [$this->getPKArchetypeByName($build->getPrimaryArchetype()), PDO::PARAM_STR],
-                    ':fkarchetypesecondary' => [$this->getPKArchetypeByName($build->getSecondaryArchetype()), PDO::PARAM_STR],
-                    ':pkbuild' => [$pkbuild, PDO::PARAM_STR]
-                ];
-                $this->dbConnection->executeQuery($queryUpdate, $paramsUpdate);
+                    $paramsUpdate = [
+                        ':fkamulet' => [$this->getPKAmuletByName($build->getAmulet()), PDO::PARAM_STR],
+                        ':fkhelmet' => [$this->getPKHelmetByName($build->getHelmet()), PDO::PARAM_STR],
+                        ':fkchestplate' => [$this->getPKChestplateByName($build->getChestplate()), PDO::PARAM_STR],
+                        ':fkgreaves' => [$this->getPKGreavesByName($build->getGreaves()), PDO::PARAM_STR],
+                        ':fkgauntlets' => [$this->getPKGauntletsByName($build->getGauntlets()), PDO::PARAM_STR],
+                        ':fkarchetypeprimary' => [$this->getPKArchetypeByName($build->getPrimaryArchetype()), PDO::PARAM_STR],
+                        ':fkarchetypesecondary' => [$this->getPKArchetypeByName($build->getSecondaryArchetype()), PDO::PARAM_STR],
+                        ':pkbuild' => [$pkbuild, PDO::PARAM_STR]
+                    ];
+                    $this->dbConnection->executeQuery($queryUpdate, $paramsUpdate);
 
-                // Clear previous ring associations
-                $queryDelete = "DELETE FROM tr_build_ring WHERE FK_Build = :fkbuild";
-                $paramsDelete = [':fkbuild' => [$pkbuild, PDO::PARAM_STR]];
-                $this->dbConnection->executeQuery($queryDelete, $paramsDelete);
+                    // Clear previous ring associations
+                    $queryDelete = "DELETE FROM tr_build_ring WHERE FK_Build = :fkbuild";
+                    $paramsDelete = [':fkbuild' => [$pkbuild, PDO::PARAM_STR]];
+                    $this->dbConnection->executeQuery($queryDelete, $paramsDelete);
 
-                $listRings = $build->getAllRings();
+                    $listRings = $build->getAllRings();
 
 
-                foreach ($listRings as $ring) {
-                    if (!empty($ring->getName())) {
-                        $queryInsert = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
-                        $paramsInsert = [
-                            ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
-                            ':fkring' => [$this->getPKRingByName($ring), PDO::PARAM_STR]
-                        ];
-                        $resultInsert = $this->dbConnection->executeQuery($queryInsert, $paramsInsert);
-                        if ($resultInsert === true) {
-                            $return = true;
+                    foreach ($listRings as $ring) {
+                        if (!empty($ring->getName())) {
+                            $queryInsert = "INSERT INTO tr_build_ring (FK_Build, FK_Ring) VALUES (:fkbuild, :fkring)";
+                            $paramsInsert = [
+                                ':fkbuild' => [$pkbuild, PDO::PARAM_STR],
+                                ':fkring' => [$this->getPKRingByName($ring), PDO::PARAM_STR]
+                            ];
+                            $resultInsert = $this->dbConnection->executeQuery($queryInsert, $paramsInsert);
+                            if ($resultInsert === true) {
+                                $return = true;
+                            }
+                        } else {
+                            $result = true;
                         }
-                    } else {
-                        $result = true;
+
                     }
 
+
                 }
-
-
+                $this->dbConnection->commit();
+            } catch (\Throwable $th) {
+                $this->dbConnection->rollback();
             }
         }
 
