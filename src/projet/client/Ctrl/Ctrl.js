@@ -1,3 +1,10 @@
+/*
+ * Controller Login Page
+ *
+ * @author Bergmann Leon
+ * @project Remnant 2 Build Planner
+ * @version 2.0 / 06-MAY-2025
+ */
 import { WrkHttps } from "../Wrk/WrkHttps.js";
 import { Amulet } from "../beans/Amulet.js";
 export class Ctrl {

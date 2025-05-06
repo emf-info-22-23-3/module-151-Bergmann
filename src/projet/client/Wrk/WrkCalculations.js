@@ -1,3 +1,11 @@
+/*
+ * Worker Calculation and Data
+ *
+ * @author Bergmann Leon
+ * @project Remnant 2 Build Planner
+ * @version 2.0 / 06-MAY-2025
+ */
+
 import { Amulet } from "../beans/Amulet.js";
 import { Ring } from "../beans/Ring.js";
 import { Helmet } from "../beans/Helmet.js";
@@ -72,56 +80,99 @@ export class WrkCalculations {
         WrkCalculations.instance = this;
     }
 
-
+    /**
+    * method to create a new build
+    * @param {Build} build
+    * @returns {undefined}
+    */
     addBuild(build) {
         if (build instanceof Build) {
             this._builds.push(build);
         }
     }
 
+    /**
+    * method to create a new Amulet
+    * @param {Amulet} amulet
+    * @returns {undefined}
+    */
     addAmulet(amulet) {
         if (amulet instanceof Amulet) {
             this._amuletsList.push(amulet);
         }
     }
 
+    /**
+    * method to create a new Ring
+    * @param {Ring} ring
+    * @returns {undefined}
+    */
     addRing(ring) {
         if (ring instanceof Ring) {
             this._ringsList.push(ring);
         }
     }
 
+    /**
+    * method to create a new Helmet
+    * @param {Helmet} helmet
+    * @returns {undefined}
+    */
     addHelmet(helmet) {
         if (helmet instanceof Helmet) {
             this._helmetsList.push(helmet);
         }
     }
 
+    /**
+    * method to create a new Chestplate
+    * @param {Chestplate} chestplate
+    * @returns {undefined}
+    */
     addChestplate(chestplate) {
         if (chestplate instanceof Chestplate) {
             this._chestplatesList.push(chestplate);
         }
     }
 
+    /**
+    * method to create new Greaves
+    * @param {Greaves} greaves
+    * @returns {undefined}
+    */
     addGreaves(greaves) {
         if (greaves instanceof Greaves) {
             this._greavesList.push(greaves);
         }
     }
 
+    /**
+    * method to create new Gauntlets
+    * @param {Gauntlets} gauntlets
+    * @returns {undefined}
+    */
     addGauntlets(gauntlets) {
         if (gauntlets instanceof Gauntlets) {
             this._gauntletsList.push(gauntlets);
         }
     }
 
+    /**
+    * method to create a new Archetype
+    * @param {Archetype} archetype
+    * @returns {undefined}
+    */
     addArchetype(archetype) {
         if (archetype instanceof Archetype) {
             this._archetypesList.push(archetype);
         }
     }
 
-
+    /**
+    * method to change the current Build
+    * @param {String} buildname
+    * @returns {undefined}
+    */
     buildChange(buildname) {
         this._currentBuild = this._builds.find(build => build.name === buildname);
 
@@ -132,6 +183,11 @@ export class WrkCalculations {
         return this._currentBuild;
     }
 
+    /**
+    * method to change the current Amulet
+    * @param {String} newAmulet
+    * @returns {undefined}
+    */
     amuletChange(newAmulet) {
         this._amuletsList.forEach(amulet => {
             if (amulet._name == newAmulet) {
@@ -141,6 +197,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Ring 1
+    * @param {String} ring1
+    * @returns {undefined}
+    */
     ring1Change(ring1) {
         this._ringsList.forEach(ring => {
             if (ring._name == ring1) {
@@ -150,6 +211,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Ring 2
+    * @param {String} ring2
+    * @returns {undefined}
+    */
     ring2Change(ring2) {
         this._ringsList.forEach(ring => {
             if (ring._name == ring2) {
@@ -159,6 +225,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Ring 3
+    * @param {String} ring3
+    * @returns {undefined}
+    */
     ring3Change(ring3) {
         this._ringsList.forEach(ring => {
             if (ring._name == ring3) {
@@ -168,6 +239,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Ring 4
+    * @param {String} ring4
+    * @returns {undefined}
+    */
     ring4Change(ring4) {
         this._ringsList.forEach(ring => {
             if (ring._name == ring4) {
@@ -176,17 +252,24 @@ export class WrkCalculations {
             }
         });
     }
-
+    /**
+    * method to change the current Helmet
+    * @param {String} newhelmet
+    * @returns {undefined}
+    */
     helmetChange(newhelmet) {
         this._helmetsList.forEach(helmet => {
-            console.log(helmet._name);
             if (helmet._name == newhelmet) {
                 this._currentBuild.helmet = helmet;
-                console.log(this._currentBuild.helmet);
             }
         });
     }
 
+    /**
+    * method to change the current Chestplate
+    * @param {String} newChestplate
+    * @returns {undefined}
+    */
     chestplateChange(newChestplate) {
         this._chestplatesList.forEach(chestplate => {
             if (chestplate._name == newChestplate) {
@@ -196,6 +279,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Greaves
+    * @param {String} newGreaves
+    * @returns {undefined}
+    */
     greavesChange(newGreaves) {
         this._greavesList.forEach(greaves => {
             if (greaves._name == newGreaves) {
@@ -205,6 +293,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current Gauntlets
+    * @param {String} newGauntlets
+    * @returns {undefined}
+    */
     gauntletsChange(newGauntlets) {
         this._gauntletsList.forEach(gauntlets => {
             if (gauntlets._name == newGauntlets) {
@@ -214,6 +307,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current primary Archetype
+    * @param {String} newArchetype
+    * @returns {undefined}
+    */
     primaryArchetypeChange(newArchetype) {
         this._archetypesList.forEach(archetype => {
             if (archetype._name == newArchetype) {
@@ -222,6 +320,11 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to change the current secondary Archetype
+    * @param {String} newArchetype
+    * @returns {undefined}
+    */
     secondaryArchetypeChange(newArchetype) {
         this._archetypesList.forEach(archetype => {
             if (archetype._name == newArchetype) {
@@ -230,6 +333,10 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to execute all calculations
+    * @returns {undefined}
+    */
     updateStats() {
         this.calculateStats("Armor");
         this.calculateStats("Health");
@@ -266,6 +373,11 @@ export class WrkCalculations {
 
     }
 
+    /**
+    * method to calculate all stats except weight, armor and Damage reduction, using the provided stat
+    * @param {String} stat
+    * @returns {undefined}
+    */
     calculateStats(stat) {
         this._stats.set(stat, 100);
         if (this._amulet instanceof Amulet) {
@@ -289,6 +401,10 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to calculate the armor stat
+    * @returns {undefined}
+    */
     calculateArmor() {
         this._stats.set("Armor", 0);
         if (this._helmet instanceof Helmet) {
@@ -325,6 +441,10 @@ export class WrkCalculations {
         this._stats.set("Armor", this._stats.get("Armor") * (1 + (this._stats.get("ArmorEffectiven") / 100)))
     }
 
+    /**
+    * method to calculate the weight stat
+    * @returns {undefined}
+    */
     calculateWeight() {
         this._stats.set("Weight", 0);
         if (this._helmet instanceof Helmet) {
@@ -377,6 +497,10 @@ export class WrkCalculations {
         });
     }
 
+    /**
+    * method to calculate the Damage reduction stat
+    * @returns {undefined}
+    */
     calculateDamageReduction() {
         var armorDR = this._stats.get("Armor") / (this._stats.get("Armor") + 200);
         var flatDR = 0;
@@ -401,10 +525,18 @@ export class WrkCalculations {
         this._stats.set("DamageReduction", 1 - (1 - armorDR) * (1 - (flatDR / 100)));
     }
 
+    /**
+     * the Getter for the stats
+     * @returns the stats as a list
+     */
     getStats() {
         return this._stats;
     }
 
+    /**
+     * the Getter for the name of the equipped Amulet
+     * @returns the name
+     */
     getAmuletName() {
         var resultat = "Amulet"
         if (this._currentBuild.amulet != null) {
@@ -413,6 +545,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped ring 1
+     * @returns the name
+     */
     getRing1Name() {
         var resultat = "Ring"
         if (this._currentBuild.ring1 != null) {
@@ -421,6 +557,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped ring 2
+     * @returns the name
+     */
     getRing2Name() {
         var resultat = "Ring"
         if (this._currentBuild.ring2 != null) {
@@ -429,6 +569,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped ring 3
+     * @returns the name
+     */
     getRing3Name() {
         var resultat = "Ring"
         if (this._currentBuild.ring3 != null) {
@@ -437,6 +581,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped ring 4
+     * @returns the name
+     */
     getRing4Name() {
         var resultat = "Ring"
         if (this._currentBuild.ring4 != null) {
@@ -445,6 +593,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped Helmet
+     * @returns the name
+     */
     getHelmetName() {
         var resultat = "Helmet"
         if (this._currentBuild.helmet != null) {
@@ -453,6 +605,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped Chestplate
+     * @returns the name
+     */
     getChestplateName() {
         var resultat = "Chestplate"
         if (this._currentBuild.chestplate != null) {
@@ -461,6 +617,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped Greaves
+     * @returns the name
+     */
     getGreavesName() {
         var resultat = "Greaves"
         if (this._currentBuild.greaves != null) {
@@ -469,6 +629,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped Gauntlets
+     * @returns the name
+     */
     getGauntletsName() {
         var resultat = "Gauntlets"
         if (this._currentBuild.gauntlets != null) {
@@ -477,6 +641,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped primary Archetype
+     * @returns the name
+     */
     getPrimaryArchetypeName() {
         var resultat = "Archetype"
         if (this._currentBuild.primaryArchetype != null) {
@@ -485,6 +653,10 @@ export class WrkCalculations {
         return resultat;
     }
 
+    /**
+     * the Getter for the name of the equipped secondary Archetype
+     * @returns the name
+     */
     getSecondaryArchetypeName() {
         var resultat = "Archetype"
         if (this._currentBuild.secondaryArchetype != null) {
